@@ -1,7 +1,7 @@
 from dataclasses import field, fields
 from django.forms import ValidationError
 from rest_framework import serializers
-from SyncCalendar.models import Schedule
+from SyncCalendar.models import Schedule, UpdateRegister
 
 class ScheduleSerializer( serializers.ModelSerializer):
     class Meta:
@@ -28,3 +28,11 @@ class AddSchedule(serializers.Serializer):
         if len(value) < 4:
              raise ValidationError("Campo Codigo da loja deve ser formado por 4 digitos")
         return value
+    
+
+class UpdateRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UpdateRegister
+        fields = '__all__'  # Para incluir todos os campos do modelo
+
+   

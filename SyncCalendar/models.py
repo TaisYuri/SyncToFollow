@@ -10,3 +10,14 @@ class Schedule(models.Model):
     appointmentDate = models.DateField()
     appointmentTime = models.TimeField()
     createdDate = models.DateTimeField(auto_now=True)
+
+class UpdateRegister(models.Model):
+    codLoja = models.CharField(max_length=5, null=False, blank=False)
+    platFiscal = models.CharField(max_length= 255, null= False, blank= False)
+    cadBanco = models.BooleanField(default=False, null=False, blank=False)
+    cadRF = models.BooleanField(default=False,  null=False, blank=False)
+    csc_acSat = models.CharField(max_length=255, null=False, blank=False)
+    certDigital_atvSat = models.CharField(max_length=255, null=False, blank=False)
+    impostos = models.BooleanField(default=True,  null=False, blank=False)
+    check_status = models.BooleanField(default=False,  null=False, blank=False)
+    steps = models.JSONField(encoder=None)

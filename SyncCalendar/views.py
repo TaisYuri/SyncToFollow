@@ -3,6 +3,8 @@ from rest_framework.views import Response
 from rest_framework import viewsets
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from django.utils import timezone
+from SyncCalendar.models import UpdateRegister
+from SyncCalendar.serializers import UpdateRegisterSerializer
 
 from SyncCalendar.models import Schedule 
 from SyncCalendar.serializers import AddSchedule, ScheduleSerializer
@@ -44,3 +46,7 @@ class postScheduleAPIView(APIView):
 class scheduleViewSet(viewsets.ModelViewSet):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
+
+class UpdateRegisterViewSet(viewsets.ModelViewSet):
+    queryset = UpdateRegister.objects.all()
+    serializer_class = UpdateRegisterSerializer
