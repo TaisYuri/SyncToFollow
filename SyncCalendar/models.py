@@ -21,3 +21,5 @@ class UpdateRegister(models.Model):
     impostos = models.BooleanField(default=True,  null=False, blank=False)
     check_status = models.BooleanField(default=False,  null=False, blank=False)
     steps = models.JSONField(encoder=None)
+    fileCsc_acSat = models.FileField( null=True, blank=True)
+    fileCertDigital_atvSat = models.FileField(  null=True, blank=True)
