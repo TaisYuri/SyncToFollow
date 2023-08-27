@@ -5,9 +5,10 @@ from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_RE
 from django.utils import timezone
 from SyncCalendar.models import UpdateRegister
 from SyncCalendar.serializers import UpdateRegisterSerializer
-
+from rest_framework.parsers import MultiPartParser, FormParser
 from SyncCalendar.models import Schedule 
 from SyncCalendar.serializers import AddSchedule, ScheduleSerializer
+from rest_framework import permissions
 
 # Create your views here.
 class getScheduleAPIView( APIView ):
@@ -50,3 +51,9 @@ class scheduleViewSet(viewsets.ModelViewSet):
 class UpdateRegisterViewSet(viewsets.ModelViewSet):
     queryset = UpdateRegister.objects.all()
     serializer_class = UpdateRegisterSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
