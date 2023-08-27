@@ -52,8 +52,6 @@ class UpdateRegisterViewSet(viewsets.ModelViewSet):
     queryset = UpdateRegister.objects.all()
     serializer_class = UpdateRegisterSerializer
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
