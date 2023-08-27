@@ -21,10 +21,12 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register('api', scheduleViewSet)
 router.register(r'updateregister', UpdateRegisterViewSet)
-router.register(r'updateimage', UpdateImageViewSet)
+# router.register(r'updateimage', UpdateImageViewSet.as_view(), name='file-upload')
 
 urlpatterns = [
     path('',include(router.urls)),
+    path('upload/', UpdateImageViewSet.as_view(), name='file-upload'),
+
     #path('api/', include(router.urls)),
 
 ]

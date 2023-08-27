@@ -51,6 +51,11 @@ class UpdateRegisterViewSet(viewsets.ModelViewSet):
     queryset = UpdateRegister.objects.all()
     serializer_class = UpdateRegisterSerializer
 
-class UpdateImageViewSet(viewsets.ModelViewSet):
-    queryset = UpdateImage.objects.all()
-    serializer_class = UpdateImageSerializer
+class UpdateImageViewSet(APIView):
+    def post(self, request, format=None):
+        serializer = UpdateImageSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status= HTTP_201_CREATED)
+        return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
