@@ -14,14 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from SyncCalendar.views import scheduleViewSet, UpdateRegisterViewSet, UpdateImageViewSet
+from SyncCalendar.views import scheduleViewSet, UpdateRegisterViewSet, UpdateImageViewSet, FileUploadView
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register('api', scheduleViewSet)
 router.register(r'updateregister', UpdateRegisterViewSet)
-# router.register(r'updateimage', UpdateImageViewSet.as_view(), name='file-upload')
+router.register(r'updateimage', FileUploadView)
 
 urlpatterns = [
     path('',include(router.urls)),
