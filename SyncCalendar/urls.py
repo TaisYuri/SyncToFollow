@@ -17,9 +17,6 @@ Including another URLconf
 from SyncCalendar.views import scheduleViewSet, UpdateRegisterViewSet
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from django.conf.urls.static import static
-from django.conf import settings
-
 
 router = DefaultRouter()
 router.register('api', scheduleViewSet)
@@ -27,7 +24,6 @@ router.register(r'updateregister', UpdateRegisterViewSet)
 
 urlpatterns = [
     path('',include(router.urls)),
-    path('api/', include(router.urls)),
+    #path('api/', include(router.urls)),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+]
