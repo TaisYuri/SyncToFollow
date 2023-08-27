@@ -24,3 +24,7 @@ class UpdateRegister(models.Model):
     fileCsc_acSat = models.FileField( upload_to='uploads/', blank=True)
     fileNameCsc_acSat = models.CharField(max_length=255, null=False, blank=False)
     fileCertDigital_atvSat = models.FileField(  null=True, blank=True)
+
+class UpdateImage(models.Model):
+    fileK = models.FileField(upload_to='uploads/', blank=True)
+

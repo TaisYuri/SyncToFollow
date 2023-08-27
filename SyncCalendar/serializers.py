@@ -1,7 +1,7 @@
 from dataclasses import field, fields
 from django.forms import ValidationError
 from rest_framework import serializers
-from SyncCalendar.models import Schedule, UpdateRegister
+from SyncCalendar.models import Schedule, UpdateRegister, UpdateImage
 
 class ScheduleSerializer( serializers.ModelSerializer):
     class Meta:
@@ -33,6 +33,12 @@ class AddSchedule(serializers.Serializer):
 class UpdateRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = UpdateRegister
+        fields = '__all__'  # Para incluir todos os campos do modelo
+
+   
+class UpdateImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UpdateImage
         fields = '__all__'  # Para incluir todos os campos do modelo
 
    
