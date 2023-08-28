@@ -60,6 +60,9 @@ class UpdateImageViewSet(APIView):
         serializer = UpdateImageSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save()
+            cod_loja = request.data.get('codLoja')
+            update_register_instance = UpdateRegister.objects.get(codLoja=cod_loja)
+
+            serializer.save(codLoja=update_register_instance)
             return Response(serializer.data, status= HTTP_201_CREATED)
         return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)

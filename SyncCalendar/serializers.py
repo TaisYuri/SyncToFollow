@@ -39,6 +39,6 @@ class UpdateRegisterSerializer(serializers.ModelSerializer):
 class UpdateImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = UpdateImage
-        fields = ['fileK']  # Para incluir todos os campos do modelo
+        fields = ['codLoja', 'fileK']  # Para incluir todos os campos do modelo
 
    

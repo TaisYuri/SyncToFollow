@@ -26,5 +26,9 @@ class UpdateRegister(models.Model):
     fileCertDigital_atvSat = models.FileField(  null=True, blank=True)
 
 class UpdateImage(models.Model):
+    codLoja = models.ForeignKey(to= UpdateRegister, on_delete= models.CASCADE, null= False, blank= False)
     fileK = models.FileField(upload_to='uploads/', blank=True)
+
+
+
 
