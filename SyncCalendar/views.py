@@ -52,8 +52,8 @@ class UpdateRegisterViewSet(viewsets.ModelViewSet):
     serializer_class = UpdateRegisterSerializer
 
 class FileUploadView(viewsets.ModelViewSet):
-    queryset = UpdateRegister.objects.all()
-    serializer_class = UpdateRegisterSerializer
+    queryset = UpdateImage.objects.all()
+    serializer_class = UpdateImageSerializer
 
 class UpdateImageViewSet(APIView):
     def post(self, request, format=None):
