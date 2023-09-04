@@ -1,38 +1,58 @@
-import { VStack, Box, ScrollView } from "native-base";
+import { VStack, Box, ScrollView, Input } from "native-base";
 import Header from "@/components/Header";
 import ProgressBar from "@/components/Progress";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
-import { useGlobalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 import * as DocumentPicker from "expo-document-picker";
 import CheckBox from "@/components/CheckBox";
 import FooterForm from "@/components/FooterForm";
 import Accordion from "@/components/Accordion";
 import Text from "@/components/Text";
 import ButtonFile from "@/components/ButtonFile";
+import { useUpdateRegister } from "@/hooks/updateRegister";
+import { useCompanyStore } from "@/states/companyStore";
+import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
+import DrawerHeader from "@/components/DrawerHeader";
 
-export default function SecondPage() {
-  const [value, setValue] = useState(false);
-  const [expanded, setExpanded] = useState(true);
-  const { typePlat } = useGlobalSearchParams();
+export default function PlatFiscal() {
+  const [valueAtiv, setValueAtiv] = useState("");
   const [config, setConfig] = useState(false);
+  const [valueToPass, setValueToPass] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(false);
 
-  const handleDocumentSelection = useCallback(async () => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({});
-      if (result.assets !== null) {
-        const selectedAsset = result.assets[0];
+  const { typePlat } = useGlobalSearchParams();
+  const { requestUpdateRegister } = useUpdateRegister()
+  const { setData, companyStore } = useCompanyStore();
 
-        const formData = new FormData();
-        formData.append("fileCsc_acSat", selectedAsset.uri);
-        console.log("formData", formData);
-      }
-    } catch (err) {
-      console.warn(err);
+  useEffect(() => {
+    if (config) {
+      setDisabledButton(true)
+      return setValueToPass(false)
     }
-  }, []);
+    if (valueToPass) {
+      return setDisabledButton(true)
+    }
 
-  const handlePress = () => setExpanded(!expanded);
+    return setDisabledButton(false)
+  }, [valueToPass, config, setDisabledButton])
+
+  const handleContinue = useCallback(() => {
+    const data: UpdateRegisterSchemaProps = {
+      ...companyStore,
+      steps: {
+        ...companyStore.steps,
+        certDigital_atvSat: valueToPass ? false : true,
+      }
+    }
+    requestUpdateRegister({ ...data })
+    setData({ ...data })
+
+    router.push(
+      { pathname: '/(drawer)/(tabs)/Tax/', params: { typePlat: typePlat as string } }
+    );
+    console.log('data', data)
+  }, [companyStore, router, typePlat])
 
   const itensAccordion = {
     Sat: [
@@ -91,8 +111,8 @@ export default function SecondPage() {
     return (
       <>
         <VStack flex={1} backgroundColor="#f9f9f9">
-          <Header title="Certificado digital" />
-          <ProgressBar value={30} />
+          <DrawerHeader title="Certificado digital" />
+          <ProgressBar value={45} />
 
           <ScrollView mx="4" showsVerticalScrollIndicator={false}>
             <Text type="title">
@@ -115,13 +135,16 @@ export default function SecondPage() {
 
             <CheckBox
               setValues={setConfig}
-              value="check_sefaz"
+              checked={config}
               description="Instalado e pronto"
             />
           </ScrollView>
         </VStack>
         <VStack px="4" backgroundColor="#f9f9f9">
-          <FooterForm href="/Tax" setValue={setValue} />
+          <FooterForm
+            // href="/Tax"
+            setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
+
         </VStack>
       </>
     );
@@ -163,11 +186,19 @@ export default function SecondPage() {
             nós esse arquivo!
           </Text>
 
-          <ButtonFile handleDocumentSelection={handleDocumentSelection} />
+          <Input
+            size="lg"
+            variant="underlined"
+            placeholder="Código de ativação"
+            value={valueAtiv}
+            onChangeText={setValueAtiv}
+            mb="10"
+          />
         </ScrollView>
       </VStack>
       <VStack px="4" backgroundColor="#f9f9f9">
-        <FooterForm href="/Tax" setValue={setValue} />
+        <FooterForm setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
+
       </VStack>
     </>
   );

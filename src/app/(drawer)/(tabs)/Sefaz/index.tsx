@@ -1,33 +1,71 @@
 import { VStack, Box, ScrollView } from "native-base";
 import Header from "@/components/Header";
 import ProgressBar from "@/components/Progress";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
-import { useGlobalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 import * as DocumentPicker from "expo-document-picker";
 import FooterForm from "@/components/FooterForm";
 import Text from "@/components/Text";
 import Accordion from "@/components/Accordion";
 import ButtonFile from "@/components/ButtonFile";
+import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
+import { useUpdateRegister } from "@/hooks/updateRegister";
+import { useCompanyStore } from "@/states/companyStore";
+import DrawerHeader from "@/components/DrawerHeader";
 
-export default function SecondPage() {
-  const [value, setValue] = useState(false);
+export default function Sefaz() {
+  const [valueToPass, setValueToPass] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(false);
+  const [selectedFile, setSelectedFile] =
+    useState<DocumentPicker.DocumentPickerAsset>();
+
   const { typePlat } = useGlobalSearchParams();
+  const { requestUpdateRegister } = useUpdateRegister()
+  const { setData, companyStore } = useCompanyStore();
+
+  useEffect(() => {
+    if (selectedFile?.name) {
+      setDisabledButton(true)
+      return setValueToPass(false)
+    }
+    if (valueToPass) {
+      return setDisabledButton(true)
+    }
+
+    return setDisabledButton(false)
+  }, [valueToPass, selectedFile, setDisabledButton])
 
   const handleDocumentSelection = useCallback(async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({});
-      if (result.assets !== null) {
-        const selectedAsset = result.assets[0];
 
-        const formData = new FormData();
-        formData.append("fileCsc_acSat", selectedAsset.uri);
-        console.log("formData", formData);
+      if (result.assets !== null) {
+        setSelectedFile(result?.assets?.[0]);
+        console.log("result?.assets?.[0]", result?.assets?.[0]);
       }
     } catch (err) {
       console.warn(err);
     }
-  }, []);
+  }, [selectedFile]);
+
+  const handleContinue = useCallback(() => {
+    const data: UpdateRegisterSchemaProps = {
+      ...companyStore,
+      steps: {
+        ...companyStore.steps,
+        csc_acSat: valueToPass ? false : true,
+      }
+    }
+    requestUpdateRegister({ ...data })
+    setData({ ...data })
+
+    router.push(
+      { pathname: '/(drawer)/(tabs)/Fisco/', params: { typePlat: typePlat as string } }
+    );
+    console.log('data-- PASSO 2', data)
+  }, [companyStore, router, typePlat])
+
 
   const itemsAccordion = {
     Sat: [
@@ -70,8 +108,8 @@ export default function SecondPage() {
     return (
       <>
         <VStack flex={1} backgroundColor="#f9f9f9">
-          <Header title="CSC - TOKEN" />
-          <ProgressBar value={20} />
+          <DrawerHeader title="CSC - TOKEN" />
+          <ProgressBar value={30} />
 
           <ScrollView mx="4" showsVerticalScrollIndicator={false}>
             <Text type="title">
@@ -105,10 +143,15 @@ export default function SecondPage() {
             </Text>
 
             <ButtonFile handleDocumentSelection={handleDocumentSelection} />
+            <VStack m='3'>
+              <Text fontSize='sm'>{selectedFile?.name}</Text>
+            </VStack>
           </ScrollView>
         </VStack>
         <VStack px="4" backgroundColor="#f9f9f9">
-          <FooterForm href="/PlatFiscal/Sat" setValue={setValue} />
+          <FooterForm
+            // href="/PlatFiscal/Sat" 
+            setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
         </VStack>
       </>
     );
@@ -150,10 +193,17 @@ export default function SecondPage() {
           </Text>
 
           <ButtonFile handleDocumentSelection={handleDocumentSelection} />
+          <VStack m='3'>
+            <Text fontSize='sm'>{selectedFile?.name}</Text>
+          </VStack>
         </ScrollView>
       </VStack>
       <VStack px="4" backgroundColor="#f9f9f9">
-        <FooterForm href="/PlatFiscal/Sat" setValue={setValue} />
+        <FooterForm
+          // href="/PlatFiscal/Sat" 
+          setValue={setValueToPass} checked={valueToPass}
+          disabled={disabledButton} onPress={handleContinue}
+        />
       </VStack>
     </>
   );

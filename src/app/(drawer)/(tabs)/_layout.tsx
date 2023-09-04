@@ -3,7 +3,6 @@ import { NativeBaseProvider } from "native-base";
 import { theme } from "@/theme";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback } from "react";
 import {
   Lato_400Regular,
   Lato_700Bold,
@@ -22,12 +21,16 @@ export default function TabRoutesLayout() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+
+
   return (
+
     <NativeBaseProvider theme={theme}>
       <Stack screenOptions={{ headerShown: false }}>
+        {/* <Stack.Screen name="Welcome/[codLoja]" options={{ title: "Home" }} /> */}
         <Stack.Screen name="Login/index" options={{ title: "Login" }} />
         <Stack.Screen
-          name="CadUnico/index"
+          name="CadUnico/[platFiscal]"
           options={{ title: "Cadastro Inicial" }}
         />
         {/* <Stack.Screen name="profile" options={{ title: "Perfil" }} /> */}

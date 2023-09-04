@@ -1,27 +1,15 @@
-import { useScheduled } from "@/hooks/scheduled";
-import { useUpdateRegister } from "@/hooks/updateRegister";
 import {
   VStack,
-  Popover,
   Box,
-  Button,
-  Icon,
   HStack,
-  Tooltip,
-  Checkbox,
   Divider,
   ScrollView,
-  View,
 } from "native-base";
-import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
-import axios from "axios";
 
 import Header from "@/components/Header";
 import ProgressBar from "@/components/Progress";
-import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
-import ButtonRN from "@/components/ButtonFile";
 import CheckBox from "@/components/CheckBox";
 import FooterForm from "@/components/FooterForm";
 import Text from "@/components/Text";

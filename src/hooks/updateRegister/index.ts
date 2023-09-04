@@ -5,7 +5,7 @@ import { UpdateRegisterSchema, UpdateRegisterSchemaProps } from "./types";
 import { ApiService } from "../../service";
 
 export interface optionsProps {
-  method: "GET" | "POST";
+  method: "GET" | "POST" | "PUT";
   url: string;
   data?: any;
 }
@@ -13,8 +13,8 @@ export interface optionsProps {
 export const useUpdateRegister = () => {
   const [loading, setLoading] = useState(false);
   const [dataUpdateRegister, setDataUpdateRegister] = useState<
-    UpdateRegisterSchema[]
-  >([]);
+    UpdateRegisterSchema
+  >();
 
   const optionsDefault = ({ method, url, data }: optionsProps) => {
     return {
@@ -22,16 +22,16 @@ export const useUpdateRegister = () => {
       url,
       baseURL: "http://taisyuri.pythonanywhere.com",
       headers: {
-        "content-type": "multipart/form-data",
+        "content-type": "application/json",
       },
       data,
     };
   };
 
-  const getUpdateRegister = useCallback(async () => {
+  const getUpdateRegister = useCallback(async (codLoja: string) => {
     try {
       setLoading(true);
-      const { data } = await ApiService.get("/updateregister");
+      const { data } = await ApiService.get(`/updateregister/${codLoja}`);
       setDataUpdateRegister(data);
       setLoading(false);
     } catch (error) {
@@ -44,12 +44,12 @@ export const useUpdateRegister = () => {
     }
   }, []);
 
-  const sendFavorite = useCallback(async ({ ...props }) => {
+  const sendUpdateRegister = useCallback(async ({ ...props }) => {
     setLoading(true);
     await axios(
       optionsDefault({
         method: "POST",
-        url: `/updateregister/`,
+        url: "/updateregister/",
         data: props,
       })
     )
@@ -57,7 +57,32 @@ export const useUpdateRegister = () => {
         console.log(response);
       })
       .catch(function (error) {
-        console.error(error);
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(error);
+        }
+      });
+  }, []);
+
+  const requestUpdateRegister = useCallback(async (props: UpdateRegisterSchemaProps) => {
+    setLoading(true);
+    await axios(
+      optionsDefault({
+        method: "PUT",
+        url: `/updateregister/${props.codLoja}/`,
+        data: props,
+      })
+    )
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log("Log",error.response.data);
+        } else {
+          console.log(error);
+        }
       });
   }, []);
 
@@ -65,6 +90,7 @@ export const useUpdateRegister = () => {
     loading,
     getUpdateRegister,
     dataUpdateRegister,
-    sendFavorite,
+    sendUpdateRegister,
+    requestUpdateRegister
   };
 };

@@ -1,8 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "./layout";
 import { company } from "../../../../mocks/company";
 import { useRouter, useGlobalSearchParams, router } from "expo-router";
 import { Alert, IToastProps, useToast } from "native-base";
+import { useUpdateRegister } from "@/hooks/updateRegister";
+import { initialValues } from "@/mocks/initialValues";
+
+const data = {
+  codLoja: "0002",
+  platFiscal: "-",
+  cadBanco: false,
+  cadRF: false,
+  csc_acSat: "-",
+  certDigital_atvSat: "-",
+  impostos: false,
+  check_status: false,
+  steps: {
+    cadBanco: false,
+    cadRF: false,
+    csc_acSat: false,
+    certDigital_atvSat: false,
+    impostos: false
+  }
+};
+const dataPut = {
+  codLoja: "0001",
+  platFiscal: "SAT",
+  cadBanco: false,
+  cadRF: false,
+  csc_acSat: "22222",
+  certDigital_atvSat: "45444",
+  impostos: false,
+  check_status: false,
+  steps: {
+    cadBanco: true,
+    cadRF: false,
+    csc_acSat: false,
+    certDigital_atvSat: false,
+    impostos: false
+  }
+};
+
 
 export default function Login() {
   const [codLoja, setCodLoja] = useState("");
@@ -12,6 +50,8 @@ export default function Login() {
   const router2 = useRouter();
   const searchParams = useGlobalSearchParams();
   const toast = useToast();
+
+
   const handleLogin = () => {
     const filterLogin = company.filter(
       (item) => item.codLoja === codLoja && item.cnpj === cnpj
@@ -27,12 +67,12 @@ export default function Login() {
               </Alert>
             );
           },
-          duration: 1000,
+          duration: 1500,
         });
-      }, 400);
+      }, 2700);
       return setTimeout(() => {
         setLoading(false);
-        router.push(`/(drawer)/Welcome/${codLoja}`);
+        router.push(`/(drawer)/(tabs)/Home/${codLoja}`);
       }, 3000);
     } else {
       toast.show({

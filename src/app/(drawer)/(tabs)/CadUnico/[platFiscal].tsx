@@ -1,28 +1,70 @@
 import { VStack, Box, HStack, Divider, ScrollView } from "native-base";
-
-import Header from "@/components/Header";
 import ProgressBar from "@/components/Progress";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
 import CheckBox from "@/components/CheckBox";
 import FooterForm from "@/components/FooterForm";
 import Text from "@/components/Text";
 import Accordion from "@/components/Accordion";
-import { useGlobalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
+import { useUpdateRegister } from "@/hooks/updateRegister";
+import { useCompanyStore } from "@/states/companyStore";
+import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
+import DrawerHeader from "@/components/DrawerHeader";
 
-export default function FirstPage() {
-  const [groupValues, setGroupValues] = useState([]);
+export default function CadUnico() {
   const [valueBank, setValueBank] = useState(false);
   const [valueSefaz, setValueSefaz] = useState(false);
   const [valueToPass, setValueToPass] = useState(false);
-  const { codLoja } = useGlobalSearchParams();
+  const [disabledButton, setDisabledButton] = useState(false);
+  const { platFiscal } = useGlobalSearchParams();
 
-  console.log("codLoja", codLoja);
+  const { requestUpdateRegister } = useUpdateRegister()
+  const { setData, companyStore } = useCompanyStore();
+
+  useEffect(() => {
+    if (valueBank && valueSefaz) {
+      setValueToPass(false)
+      return setDisabledButton(true)
+    }
+
+    if (valueToPass) {
+      return setDisabledButton(true)
+    }
+
+    return setDisabledButton(false)
+  }, [valueBank,
+    valueSefaz,
+    valueToPass])
+
+  const handleContinue = useCallback(() => {
+
+    console.log("valueToPass", valueToPass)
+    const data: UpdateRegisterSchemaProps = {
+      ...companyStore,
+      platFiscal: platFiscal as string,
+      cadBanco: valueBank,
+      cadRF: valueSefaz,
+      steps: {
+        ...companyStore.steps,
+        cadBanco: valueToPass ? false : true,
+        cadRF: valueToPass ? false : true,
+      }
+    }
+    requestUpdateRegister({...data})
+    setData({...data})
+
+    router.push(
+      { pathname: '/(drawer)/(tabs)/Sefaz/', params: { typePlat: platFiscal as string } }
+      );
+    console.log('data -- PASSp 1', data)
+  }, [companyStore, platFiscal,valueBank,valueSefaz ])
+
   return (
     <>
       <VStack flex={1} backgroundColor="#f9f9f9">
-        <Header title="Primeiro cadastro" />
-        <ProgressBar value={10} />
+        <DrawerHeader title="Primeiro cadastro" />
+        <ProgressBar value={15} />
 
         <ScrollView mx="4" showsVerticalScrollIndicator={false}>
           <Text type="title">Vamos lá!</Text>
@@ -55,7 +97,7 @@ export default function FirstPage() {
 
           <CheckBox
             setValues={setValueBank}
-            value="check_bank"
+            checked={valueBank}
             description="Abri a conta junto ao meu gerente do banco"
           />
 
@@ -81,13 +123,15 @@ export default function FirstPage() {
 
           <CheckBox
             setValues={setValueSefaz}
-            value="check_sefaz"
+            checked={valueSefaz}
             description="Cadastro realizado junto a Sefaz"
           />
         </ScrollView>
       </VStack>
       <VStack px="4" backgroundColor="#f9f9f9">
-        <FooterForm href="/Sefaz/Sat" setValue={setValueToPass} />
+        <FooterForm
+          // href={`/Sefaz/${platFiscal}`}
+          setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
       </VStack>
     </>
   );

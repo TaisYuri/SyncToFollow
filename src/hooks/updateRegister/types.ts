@@ -15,16 +15,13 @@ export interface UpdateRegisterSchemaProps {
 }
 
 export interface UpdateRegisterSchema extends UpdateRegisterSchemaProps {
-  id: string;
   createdDate: string;
 }
 
 export interface Steps {
-  platFiscal: boolean;
   cadBanco: boolean;
   cadRF: boolean;
   csc_acSat: boolean;
   certDigital_atvSat: boolean;
   impostos: boolean;
-  check_status: boolean;
 }

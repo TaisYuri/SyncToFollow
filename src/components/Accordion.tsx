@@ -27,7 +27,7 @@ export default function Accordion({ section }: AccordionProps) {
             marginLeft: -10,
             fontSize: theme.fontSizes.md,
           }}
-          style={{ height: 55 }}
+          style={{ height: 55, backgroundColor: '#f9f9f9' }}
           rippleColor="transparent"
           left={(props) => (
             <List.Icon

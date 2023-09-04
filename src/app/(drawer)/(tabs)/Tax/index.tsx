@@ -1,23 +1,73 @@
 import { VStack, Box, ScrollView } from "native-base";
 import Header from "@/components/Header";
 import ProgressBar from "@/components/Progress";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
 import CheckBox from "@/components/CheckBox";
 import FooterForm from "@/components/FooterForm";
 import Text from "@/components/Text";
 import Accordion from "@/components/Accordion";
+import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
+import { useUpdateRegister } from "@/hooks/updateRegister";
+import { useCompanyStore } from "@/states/companyStore";
+import { router } from "expo-router";
+import DrawerHeader from "@/components/DrawerHeader";
 
 export default function Tax() {
-  const [valueBank, setValueToPass] = useState(false);
   const [taxSystem, setTaxSystem] = useState(false);
   const [sheet, setSheet] = useState(false);
+  const [valueToPass, setValueToPass] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(false);
+
+  const { requestUpdateRegister } = useUpdateRegister()
+  const { setData, companyStore } = useCompanyStore();
+
+  useEffect(() => {
+    if (taxSystem) {
+      setValueToPass(false)
+      setSheet(false)
+      return setDisabledButton(true)
+    }
+
+    if (sheet) {
+      setValueToPass(false)
+      setTaxSystem(false)
+      return setDisabledButton(true)
+    }
+    if (valueToPass) {
+      setSheet(false)
+      setTaxSystem(false)
+      return setDisabledButton(true)
+    }
+
+    return setDisabledButton(false)
+  }, [taxSystem,
+    sheet,
+    valueToPass])
+
+  const handleContinue = useCallback(() => {
+    const data: UpdateRegisterSchemaProps = {
+      ...companyStore,
+      steps: {
+        ...companyStore.steps,
+        impostos: valueToPass ? false : true,
+      }
+    }
+    requestUpdateRegister({ ...data })
+    setData({ ...data })
+
+    router.push(
+      // '/(drawer)/(tabs)/DataVerify/'
+      { pathname: '/(drawer)/(tabs)/DataVerify/', params: { codLoja: companyStore.codLoja} }
+    );
+  }, [companyStore, router, valueToPass])
+
 
   return (
     <>
       <VStack flex={1} backgroundColor="#f9f9f9">
-        <Header title="Impostos" />
-        <ProgressBar value={10} />
+        <DrawerHeader title="Impostos" />
+        <ProgressBar value={60} />
 
         <ScrollView mx="4" showsVerticalScrollIndicator={false}>
           <Text type="title">Estamos quase lá!</Text>
@@ -64,19 +114,20 @@ export default function Tax() {
           </Box>
           <CheckBox
             setValues={setTaxSystem}
-            value="impostos_sistema"
+            checked={taxSystem}
             description="Quero os impostos do sistema"
           />
           <CheckBox
             setValues={setSheet}
-            value="planilha"
+            checked={sheet}
             description="Quero a planilha para meu contador preencher"
           />
         </ScrollView>
       </VStack>
 
       <VStack px="4" backgroundColor="#f9f9f9">
-        <FooterForm href="/DataVerify" setValue={setValueToPass} />
+        <FooterForm
+          setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
       </VStack>
     </>
   );

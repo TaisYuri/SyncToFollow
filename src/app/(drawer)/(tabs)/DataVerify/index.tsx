@@ -6,6 +6,12 @@ import PopoverComp, { PopoverHeader } from "@/components/Popover";
 import Text from "@/components/Text";
 import { Ionicons } from "@expo/vector-icons";
 import ButtonRN from "@/components/Button";
+import { useUpdateRegister } from "@/hooks/updateRegister";
+import { useCompanyStore } from "@/states/companyStore";
+import DrawerHeader from "@/components/DrawerHeader";
+import WellDone from "../../../../../assets/well_done.svg";
+import KeyPoints from "../../../../../assets/key_points.svg";
+import { useGlobalSearchParams } from "expo-router";
 
 export interface Steps {
   platFiscal: boolean;
@@ -42,7 +48,29 @@ export default function DataVerify() {
   const [taxSystem, setTaxSystem] = useState(false);
   const [sheet, setSheet] = useState(false);
 
+  const {getUpdateRegister, dataUpdateRegister  } = useUpdateRegister();
+  // const {companyStore} = useCompanyStore();
+  const { codLoja } = useGlobalSearchParams();
+
+
   const [pendency, setPendency] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    getUpdateRegister(codLoja as string)
+  }, []);
+
+
+  useEffect(() => {
+    if(dataUpdateRegister?.steps){
+      console.log('aaaaaaaaaaaaaSSAD',dataUpdateRegister?.steps)
+
+      for (const step in dataUpdateRegister?.steps) {
+        if (dataUpdateRegister?.steps[step] === false) {
+          setPendency((prevState: string[]) => [...prevState, EnumSteps[step]]);
+        }
+      }
+    }
+  }, [dataUpdateRegister]);
 
   const handleResult = useCallback(() => {
     for (const step in mockSteps) {
@@ -55,19 +83,23 @@ export default function DataVerify() {
   const quantity = useCallback(() => {
     if (pendency.length === 0) {
       return (
-        <Text fontSize="lg" fontWeight="semibold">
-          Parabéns! Não há pendencias no processo
+        <VStack my='4'>
+        <Text fontSize="3xl" fontWeight="bold">Parabéns!
         </Text>
+        <Text fontSize="3xl" fontWeight="bold">
+          Não há pendencias no processo
+        </Text>
+        </VStack>
       );
     } else if (pendency.length === 1) {
       return (
-        <Text fontSize="lg" fontWeight="semibold">
+        <Text fontSize="lg" fontWeight="bold">
           De todas as etapas, ficou pendente apenas:
         </Text>
       );
     }
     return (
-      <Text fontSize="lg" fontWeight="semibold">
+      <Text fontSize="lg" fontWeight="bold">
         De todas as etapas, ficaram pendentes apenas estes {pendency.length}{" "}
         abaixo:
       </Text>
@@ -96,29 +128,29 @@ export default function DataVerify() {
               />
             </PopoverHeader>
           </Box>
+          <KeyPoints width="100%" height="180" /> 
         </Box>
       );
     }
     return (
-      <Box my="4">
-        <Text>
+      <>
+      <Box mt="4" mb='12'>
+        <Text >
           A partir de agora podemos agendar a instalação do seu sistema!
         </Text>
       </Box>
+      <WellDone width="100%" height="180"  />
+      </>
     );
-  }, []);
+  }, [pendency]);
 
-  useEffect(() => {
-    if (pendency.length === 0) {
-      handleResult();
-    }
-  }, []);
+
 
   return (
     <>
       <VStack flex={1} backgroundColor="#f9f9f9">
-        <Header title="Checando as informações" />
-        <ProgressBar value={10} />
+        <DrawerHeader title="Checando as informações" />
+        <ProgressBar value={75} />
 
         <ScrollView mx="4" showsVerticalScrollIndicator={false}>
           <Text type="title">Ufa!</Text>
@@ -142,18 +174,23 @@ export default function DataVerify() {
               </Text>
             </HStack>
           ))}
+          
+
           {renderContentFooter()}
+         
+
         </ScrollView>
       </VStack>
 
       <VStack px="4" pt="4" pb="6" backgroundColor="#f9f9f9">
         <ButtonRN
-          href="/Sefaz/Sat"
+          // href="/Sefaz/Sat"
           title={
             pendency.length > 0
               ? "Quero realizar o agendamento mesmo sem os dados"
               : "Ir para o agendamento"
           }
+          disabled
         />
       </VStack>
     </>
