@@ -75,7 +75,8 @@ export const useUpdateRegister = () => {
       })
     )
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
+        console.log();
       })
       .catch(function (error) {
         if (error.response) {

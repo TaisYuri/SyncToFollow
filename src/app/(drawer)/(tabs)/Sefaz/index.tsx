@@ -1,17 +1,16 @@
 import { VStack, Box, ScrollView } from "native-base";
-import Header from "@/components/Header";
-import ProgressBar from "@/components/Progress";
 import { useCallback, useEffect, useState } from "react";
-import PopoverComp, { PopoverHeader } from "@/components/Popover";
-import { router, useGlobalSearchParams } from "expo-router";
-import * as DocumentPicker from "expo-document-picker";
-import FooterForm from "@/components/FooterForm";
-import Text from "@/components/Text";
-import Accordion from "@/components/Accordion";
-import ButtonFile from "@/components/ButtonFile";
 import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
 import { useUpdateRegister } from "@/hooks/updateRegister";
 import { useCompanyStore } from "@/states/companyStore";
+import { router, useGlobalSearchParams } from "expo-router";
+import * as DocumentPicker from "expo-document-picker";
+import PopoverComp, { PopoverHeader } from "@/components/Popover";
+import FooterForm from "@/components/FooterForm";
+import ProgressBar from "@/components/Progress";
+import Text from "@/components/Text";
+import Accordion from "@/components/Accordion";
+import ButtonFile from "@/components/ButtonFile";
 import DrawerHeader from "@/components/DrawerHeader";
 
 export default function Sefaz() {
@@ -64,7 +63,7 @@ export default function Sefaz() {
       { pathname: '/(drawer)/(tabs)/Fisco/', params: { typePlat: typePlat as string } }
     );
     console.log('data-- PASSO 2', data)
-  }, [companyStore, router, typePlat])
+  }, [companyStore, router, typePlat, requestUpdateRegister, setData, router, valueToPass])
 
 
   const itemsAccordion = {
@@ -160,8 +159,8 @@ export default function Sefaz() {
   return (
     <>
       <VStack flex={1} backgroundColor="#f9f9f9">
-        <Header title="Liberação do aparelho SAT" />
-        <ProgressBar value={20} />
+        <DrawerHeader title="Liberação do aparelho SAT" />
+        <ProgressBar value={30} />
 
         <ScrollView mx="4" showsVerticalScrollIndicator={false}>
           <Text type="title">

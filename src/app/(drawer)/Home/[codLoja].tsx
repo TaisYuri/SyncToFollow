@@ -1,16 +1,16 @@
 import { VStack, Box, HStack, FlatList, Center, Image } from "native-base";
 import { useEffect, useState } from "react";
-import Text from "@/components/Text";
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useGlobalSearchParams } from "expo-router";
-import DrawerHeader from "@/components/DrawerHeader";
 import { ICompany, company } from "@/mocks/company";
 import { Card, IconButton } from 'react-native-paper';
 import { equipmentByState } from "@/mocks/equipmentByState";
 import { equipment } from "@/mocks/equipment";
-import { LinearGradient } from 'expo-linear-gradient';
 import { useUpdateRegister } from "@/hooks/updateRegister";
 import { initialValues } from "@/mocks/initialValues";
 import { useCompanyStore } from "@/states/companyStore";
+import Text from "@/components/Text";
+import DrawerHeader from "@/components/DrawerHeader";
 
 export default function Home() {
   const [companyInfo, setCompanyInfo] = useState<ICompany[]>([]);
@@ -19,9 +19,9 @@ export default function Home() {
   const { sendUpdateRegister, } = useUpdateRegister()
   const {setData} = useCompanyStore();
 
-  const impr = require('../../../../../assets/Impr.png')
-  const certif = require('../../../../../assets/certificado.png')
-  const pinpad = require('../../../../../assets/pinpad.png')
+  const impr = require('../../../../assets/Impr.png')
+  const certif = require('../../../../assets/certificado.png')
+  const pinpad = require('../../../../assets/pinpad.png')
 
   useEffect(() => {
     if (codLoja) {
@@ -94,7 +94,7 @@ export default function Home() {
                   <Text fontSize="3xl" fontWeight="bold">{equipmentByState[item.state]}</Text>
                 </VStack>
                 <VStack bgColor={'#0362C4'} borderRadius={50} position={'relative'} width={85} height={85} >
-                  <Image source={require('../../../../../assets/Sat.png')} size={95} alt='' position={'absolute'} left={2} resizeMode="contain" />
+                  <Image source={require('../../../../assets/Sat.png')} size={95} alt='' position={'absolute'} left={2} resizeMode="contain" />
                 </VStack>
               </HStack>
             ))}

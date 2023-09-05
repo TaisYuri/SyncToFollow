@@ -1,18 +1,15 @@
 import { VStack, Box, ScrollView, Input } from "native-base";
-import Header from "@/components/Header";
-import ProgressBar from "@/components/Progress";
 import { useCallback, useEffect, useState } from "react";
-import PopoverComp, { PopoverHeader } from "@/components/Popover";
-import { router, useGlobalSearchParams } from "expo-router";
-import * as DocumentPicker from "expo-document-picker";
-import CheckBox from "@/components/CheckBox";
-import FooterForm from "@/components/FooterForm";
-import Accordion from "@/components/Accordion";
-import Text from "@/components/Text";
-import ButtonFile from "@/components/ButtonFile";
 import { useUpdateRegister } from "@/hooks/updateRegister";
 import { useCompanyStore } from "@/states/companyStore";
 import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
+import { router, useGlobalSearchParams } from "expo-router";
+import PopoverComp, { PopoverHeader } from "@/components/Popover";
+import CheckBox from "@/components/CheckBox";
+import ProgressBar from "@/components/Progress";
+import FooterForm from "@/components/FooterForm";
+import Accordion from "@/components/Accordion";
+import Text from "@/components/Text";
 import DrawerHeader from "@/components/DrawerHeader";
 
 export default function PlatFiscal() {
@@ -26,7 +23,7 @@ export default function PlatFiscal() {
   const { setData, companyStore } = useCompanyStore();
 
   useEffect(() => {
-    if (config) {
+    if (config || valueAtiv) {
       setDisabledButton(true)
       return setValueToPass(false)
     }
@@ -35,11 +32,12 @@ export default function PlatFiscal() {
     }
 
     return setDisabledButton(false)
-  }, [valueToPass, config, setDisabledButton])
+  }, [valueToPass, config, setDisabledButton, valueAtiv])
 
   const handleContinue = useCallback(() => {
     const data: UpdateRegisterSchemaProps = {
       ...companyStore,
+      certDigital_atvSat: valueAtiv ? valueAtiv : "-",
       steps: {
         ...companyStore.steps,
         certDigital_atvSat: valueToPass ? false : true,
@@ -52,7 +50,7 @@ export default function PlatFiscal() {
       { pathname: '/(drawer)/(tabs)/Tax/', params: { typePlat: typePlat as string } }
     );
     console.log('data', data)
-  }, [companyStore, router, typePlat])
+  }, [companyStore, router, typePlat, valueAtiv, valueToPass, router, requestUpdateRegister, setData])
 
   const itensAccordion = {
     Sat: [
@@ -153,8 +151,8 @@ export default function PlatFiscal() {
   return (
     <>
       <VStack flex={1} backgroundColor="#f9f9f9">
-        <Header title="Ativação do aparelho SAT" />
-        <ProgressBar value={30} />
+        <DrawerHeader title="Ativação do aparelho SAT" />
+        <ProgressBar value={45} />
 
         <ScrollView mx="4" showsVerticalScrollIndicator={false}>
           <Text type="title">Cuidado com a pegadinha aqui!</Text>
@@ -172,6 +170,9 @@ export default function PlatFiscal() {
             </Text>
           </Box>
 
+          <Text>
+            Quando realizado a ativação, será criado um código de ativação. Este código será necessário para configuração do sistema! Então, digite-o aqui abaixo para que possamos configura-lo em seu sistema 😊
+          </Text>
           <Box w="100%" mb="4">
             <PopoverHeader titleClick="Informação importante">
               <PopoverComp
@@ -180,11 +181,6 @@ export default function PlatFiscal() {
               />
             </PopoverHeader>
           </Box>
-          <Text>
-            Assim que a Sefaz liberar, ficará disponivel um documento. Vamos
-            agilizar e já deixar tudo certinho para você, então envia aqui para
-            nós esse arquivo!
-          </Text>
 
           <Input
             size="lg"

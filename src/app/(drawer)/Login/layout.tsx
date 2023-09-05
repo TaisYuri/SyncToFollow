@@ -1,8 +1,7 @@
 import { VStack, Text, Center, Input, Button, Box } from "native-base";
-import Background from "../../../../../assets/wave.svg";
-import BackgroundBottom from "../../../../../assets/wave_bottom.svg";
 import { LoginProps } from "./types";
-import ButtonRN from "@/components/Button";
+import Background from "../../../../assets/wave.svg";
+import BackgroundBottom from "../../../../assets/wave_bottom.svg";
 
 export default function Layout({
   buttonLogin,

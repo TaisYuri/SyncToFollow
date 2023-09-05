@@ -28,7 +28,7 @@ export default function TabRoutesLayout() {
     <NativeBaseProvider theme={theme}>
       <Stack screenOptions={{ headerShown: false }}>
         {/* <Stack.Screen name="Welcome/[codLoja]" options={{ title: "Home" }} /> */}
-        <Stack.Screen name="Login/index" options={{ title: "Login" }} />
+        {/* <Stack.Screen name="Login/index" options={{ title: "Login" }} /> */}
         <Stack.Screen
           name="CadUnico/[platFiscal]"
           options={{ title: "Cadastro Inicial" }}

@@ -1,16 +1,15 @@
-import { VStack, Box, ScrollView } from "native-base";
-import Header from "@/components/Header";
-import ProgressBar from "@/components/Progress";
 import { useCallback, useEffect, useState } from "react";
-import PopoverComp, { PopoverHeader } from "@/components/Popover";
-import CheckBox from "@/components/CheckBox";
-import FooterForm from "@/components/FooterForm";
-import Text from "@/components/Text";
-import Accordion from "@/components/Accordion";
+import { VStack, Box, ScrollView } from "native-base";
 import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
 import { useUpdateRegister } from "@/hooks/updateRegister";
 import { useCompanyStore } from "@/states/companyStore";
 import { router } from "expo-router";
+import PopoverComp, { PopoverHeader } from "@/components/Popover";
+import ProgressBar from "@/components/Progress";
+import CheckBox from "@/components/CheckBox";
+import FooterForm from "@/components/FooterForm";
+import Text from "@/components/Text";
+import Accordion from "@/components/Accordion";
 import DrawerHeader from "@/components/DrawerHeader";
 
 export default function Tax() {
@@ -48,6 +47,7 @@ export default function Tax() {
   const handleContinue = useCallback(() => {
     const data: UpdateRegisterSchemaProps = {
       ...companyStore,
+      impostos: taxSystem,
       steps: {
         ...companyStore.steps,
         impostos: valueToPass ? false : true,
@@ -57,10 +57,9 @@ export default function Tax() {
     setData({ ...data })
 
     router.push(
-      // '/(drawer)/(tabs)/DataVerify/'
-      { pathname: '/(drawer)/(tabs)/DataVerify/', params: { codLoja: companyStore.codLoja} }
+      { pathname: '/(drawer)/(tabs)/DataVerify/', params: { codLoja: companyStore.codLoja } }
     );
-  }, [companyStore, router, valueToPass])
+  }, [companyStore, router, valueToPass, taxSystem, requestUpdateRegister, setData, router])
 
 
   return (

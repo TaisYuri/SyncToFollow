@@ -1,17 +1,18 @@
-import { VStack, Box, ScrollView, HStack, Icon } from "native-base";
-import Header from "@/components/Header";
-import ProgressBar from "@/components/Progress";
+import { VStack, Box, ScrollView, HStack, Icon, Center } from "native-base";
 import { useCallback, useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { useUpdateRegister } from "@/hooks/updateRegister";
+import { useGlobalSearchParams } from "expo-router";
+import { ActivityIndicator } from "react-native-paper";
+import { theme } from "@/theme";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
 import Text from "@/components/Text";
-import { Ionicons } from "@expo/vector-icons";
+import ProgressBar from "@/components/Progress";
 import ButtonRN from "@/components/Button";
-import { useUpdateRegister } from "@/hooks/updateRegister";
-import { useCompanyStore } from "@/states/companyStore";
 import DrawerHeader from "@/components/DrawerHeader";
+
 import WellDone from "../../../../../assets/well_done.svg";
 import KeyPoints from "../../../../../assets/key_points.svg";
-import { useGlobalSearchParams } from "expo-router";
 
 export interface Steps {
   platFiscal: boolean;
@@ -23,72 +24,58 @@ export interface Steps {
   impostos: boolean;
 }
 
-const mockSteps: { [key: string]: Boolean } = {
-  platFiscal: true,
-  check_status: true,
-  cadBanco: true,
-  cadRF: true,
-  csc_acSat: true,
-  certDigital_atvSat: true,
-  impostos: true,
-};
-
-const EnumSteps: { [key: string]: string } = {
+const EnumStepsNFCE: { [key: string]: string } = {
   cadBanco: "Cadastro no banco",
   cadRF: "Cadastro na Secretaria da Fazenda",
-  csc_acSat: "CSC - Token ------ AC SAT",
-  certDigital_atvSat: "Certificado digital ----- Ativação SAT",
+  csc_acSat: "Código de Segurança do Contribuinte - Token",
+  certDigital_atvSat: "Certificado digital",
   impostos: "Configuração de Impostos no sistema",
-  platFiscal: "",
-  check_status: "",
+};
+const EnumStepsSAT: { [key: string]: string } = {
+  cadBanco: "Cadastro no banco",
+  cadRF: "Cadastro na Secretaria da Fazenda",
+  csc_acSat: "Vinculação do Aplicativo Comercial",
+  certDigital_atvSat: "Ativação do SAT",
+  impostos: "Configuração de Impostos no sistema",
 };
 
 export default function DataVerify() {
-  const [valueBank, setValueToPass] = useState(false);
-  const [taxSystem, setTaxSystem] = useState(false);
-  const [sheet, setSheet] = useState(false);
 
-  const {getUpdateRegister, dataUpdateRegister  } = useUpdateRegister();
-  // const {companyStore} = useCompanyStore();
+  const [pendency, setPendency] = useState<Array<string>>([]);
+  const [isLoading, setisLoading] = useState(false);
+  const { getUpdateRegister, dataUpdateRegister, loading } = useUpdateRegister();
   const { codLoja } = useGlobalSearchParams();
 
 
-  const [pendency, setPendency] = useState<Array<string>>([]);
-
   useEffect(() => {
+    setisLoading(true)
     getUpdateRegister(codLoja as string)
+    setisLoading(false)
   }, []);
 
 
   useEffect(() => {
-    if(dataUpdateRegister?.steps){
-      console.log('aaaaaaaaaaaaaSSAD',dataUpdateRegister?.steps)
-
+    setisLoading(true)
+    if (dataUpdateRegister?.steps) {
       for (const step in dataUpdateRegister?.steps) {
         if (dataUpdateRegister?.steps[step] === false) {
-          setPendency((prevState: string[]) => [...prevState, EnumSteps[step]]);
+          setPendency((prevState: string[]) => [...prevState, dataUpdateRegister.platFiscal === 'Sat' ? EnumStepsSAT[step] : EnumStepsNFCE[step]]);
         }
       }
     }
-  }, [dataUpdateRegister]);
 
-  const handleResult = useCallback(() => {
-    for (const step in mockSteps) {
-      if (mockSteps[step] === false) {
-        setPendency((prevState: string[]) => [...prevState, EnumSteps[step]]);
-      }
-    }
-  }, []);
+    setisLoading(false)
+  }, [dataUpdateRegister]);
 
   const quantity = useCallback(() => {
     if (pendency.length === 0) {
       return (
         <VStack my='4'>
-        <Text fontSize="3xl" fontWeight="bold">Parabéns!
-        </Text>
-        <Text fontSize="3xl" fontWeight="bold">
-          Não há pendencias no processo
-        </Text>
+          <Text fontSize="3xl" fontWeight="bold">Parabéns!
+          </Text>
+          <Text fontSize="3xl" fontWeight="bold">
+            Não há pendencias no processo
+          </Text>
         </VStack>
       );
     } else if (pendency.length === 1) {
@@ -128,23 +115,26 @@ export default function DataVerify() {
               />
             </PopoverHeader>
           </Box>
-          <KeyPoints width="100%" height="180" /> 
+          <KeyPoints width="100%" height="180" />
         </Box>
       );
     }
     return (
       <>
-      <Box mt="4" mb='12'>
-        <Text >
-          A partir de agora podemos agendar a instalação do seu sistema!
-        </Text>
-      </Box>
-      <WellDone width="100%" height="180"  />
+        <Box mt="4" mb='12'>
+          <Text >
+            A partir de agora podemos agendar a instalação do seu sistema!
+          </Text>
+        </Box>
+        <WellDone width="100%" height="180" />
       </>
     );
   }, [pendency]);
 
 
+  if (isLoading || loading) {
+    return <Center flex={1} > <ActivityIndicator animating={true} color={theme.colors.blues[400]} size='large'/></Center>
+  }
 
   return (
     <>
@@ -174,17 +164,12 @@ export default function DataVerify() {
               </Text>
             </HStack>
           ))}
-          
-
           {renderContentFooter()}
-         
-
         </ScrollView>
       </VStack>
 
       <VStack px="4" pt="4" pb="6" backgroundColor="#f9f9f9">
         <ButtonRN
-          // href="/Sefaz/Sat"
           title={
             pendency.length > 0
               ? "Quero realizar o agendamento mesmo sem os dados"

@@ -1,15 +1,15 @@
 import { VStack, Box, HStack, Divider, ScrollView } from "native-base";
-import ProgressBar from "@/components/Progress";
 import { useCallback, useEffect, useState } from "react";
-import PopoverComp, { PopoverHeader } from "@/components/Popover";
-import CheckBox from "@/components/CheckBox";
-import FooterForm from "@/components/FooterForm";
-import Text from "@/components/Text";
-import Accordion from "@/components/Accordion";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useUpdateRegister } from "@/hooks/updateRegister";
 import { useCompanyStore } from "@/states/companyStore";
 import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
+import PopoverComp, { PopoverHeader } from "@/components/Popover";
+import CheckBox from "@/components/CheckBox";
+import ProgressBar from "@/components/Progress";
+import FooterForm from "@/components/FooterForm";
+import Text from "@/components/Text";
+import Accordion from "@/components/Accordion";
 import DrawerHeader from "@/components/DrawerHeader";
 
 export default function CadUnico() {
@@ -39,7 +39,6 @@ export default function CadUnico() {
 
   const handleContinue = useCallback(() => {
 
-    console.log("valueToPass", valueToPass)
     const data: UpdateRegisterSchemaProps = {
       ...companyStore,
       platFiscal: platFiscal as string,
@@ -47,18 +46,17 @@ export default function CadUnico() {
       cadRF: valueSefaz,
       steps: {
         ...companyStore.steps,
-        cadBanco: valueToPass ? false : true,
-        cadRF: valueToPass ? false : true,
+        cadBanco: valueBank,
+        cadRF: valueSefaz,
       }
     }
-    requestUpdateRegister({...data})
-    setData({...data})
+    requestUpdateRegister({ ...data })
+    setData({ ...data })
 
     router.push(
       { pathname: '/(drawer)/(tabs)/Sefaz/', params: { typePlat: platFiscal as string } }
-      );
-    console.log('data -- PASSp 1', data)
-  }, [companyStore, platFiscal,valueBank,valueSefaz ])
+    );
+  }, [companyStore, platFiscal, valueBank, valueSefaz, requestUpdateRegister, setData, router])
 
   return (
     <>
@@ -130,7 +128,6 @@ export default function CadUnico() {
       </VStack>
       <VStack px="4" backgroundColor="#f9f9f9">
         <FooterForm
-          // href={`/Sefaz/${platFiscal}`}
           setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
       </VStack>
     </>

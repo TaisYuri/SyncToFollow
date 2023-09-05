@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import Layout from "./layout";
-import { company } from "../../../../mocks/company";
+import { company } from "../../../mocks/company";
 import { useRouter, useGlobalSearchParams, router } from "expo-router";
-import { Alert, IToastProps, useToast } from "native-base";
-import { useUpdateRegister } from "@/hooks/updateRegister";
-import { initialValues } from "@/mocks/initialValues";
+import { Alert,useToast } from "native-base";
+import { Keyboard } from "react-native";
 
 const data = {
   codLoja: "0002",
@@ -58,6 +57,7 @@ export default function Login() {
     );
     if (filterLogin.length > 0) {
       setLoading(true);
+      Keyboard.dismiss()
       setTimeout(() => {
         toast.show({
           render: () => {
