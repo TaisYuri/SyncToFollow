@@ -31,9 +31,11 @@ export default function DrawerRoutesLayout() {
           options={{ title: "Bem vindo", drawerLabel: "Home" }}
         />
         <Drawer.Screen name="(tabs)" options={{ title: "Continuar o fluxo" }} />
-        <Drawer.Screen name="Login/index" options={{ title: "Logout" }} />
         <Drawer.Screen name="profile" options={{ drawerItemStyle: { display: 'none' } }} />
+        <Drawer.Screen name="calendar" options={{ title: "Agendamento" }}  />
+        <Drawer.Screen name="logout" options={{ title: "Sair" }}  />
         <Drawer.Screen name="Login/layout" options={{ drawerItemStyle: { display: 'none' } }} />
+        <Drawer.Screen name="Login/index" options={{ drawerItemStyle: { display: 'none' } }} />
       </Drawer>
     </NativeBaseProvider>
   );

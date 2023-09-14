@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCallback } from "react";
 import axios from "axios";
-import { UpdateRegisterSchema, UpdateRegisterSchemaProps } from "./types";
+import { UpdateRegisterSchemaProps } from "./types";
 import { ApiService } from "../../service";
 
 export interface optionsProps {
@@ -13,7 +13,7 @@ export interface optionsProps {
 export const useUpdateRegister = () => {
   const [loading, setLoading] = useState(false);
   const [dataUpdateRegister, setDataUpdateRegister] = useState<
-    UpdateRegisterSchema
+  UpdateRegisterSchemaProps
   >();
 
   const optionsDefault = ({ method, url, data }: optionsProps) => {

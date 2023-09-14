@@ -1,9 +1,13 @@
-import {  useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import Layout from "./layout";
-import { company } from "../../../mocks/company";
+import { ICompany, company } from "../../../mocks/company";
 import { useRouter, useGlobalSearchParams, router } from "expo-router";
-import { Alert,useToast } from "native-base";
+import { Alert, useToast } from "native-base";
 import { Keyboard } from "react-native";
+import { useCompanyStepsStore } from "@/states/companyStepStore";
+import { useUpdateRegister } from "@/hooks/updateRegister";
+import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
+import { useInfoCompanyStore } from "@/states/infoCompanyStore";
 
 const data = {
   codLoja: "0002",
@@ -44,19 +48,30 @@ const dataPut = {
 export default function Login() {
   const [codLoja, setCodLoja] = useState("");
   const [cnpj, setCnpj] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const router2 = useRouter();
-  const searchParams = useGlobalSearchParams();
+  const {  setDataSteps } = useCompanyStepsStore();
+  const {  setData } = useInfoCompanyStore();
+
+  useEffect(() => {
+    console.log("useEffect")
+    setDataSteps({} as UpdateRegisterSchemaProps )
+    setData({} as ICompany  )
+    setCodLoja("")
+    setCnpj("")
+
+  }, [])
+
+
+
   const toast = useToast();
-
 
   const handleLogin = () => {
     const filterLogin = company.filter(
       (item) => item.codLoja === codLoja && item.cnpj === cnpj
     );
     if (filterLogin.length > 0) {
-      setLoading(true);
+      setIsLoading(true);
       Keyboard.dismiss()
       setTimeout(() => {
         toast.show({
@@ -71,8 +86,8 @@ export default function Login() {
         });
       }, 2700);
       return setTimeout(() => {
-        setLoading(false);
-        router.push(`/(drawer)/(tabs)/Home/${codLoja}`);
+        setIsLoading(false);
+        router.push(`/(drawer)/Home/${codLoja}`);
       }, 3000);
     } else {
       toast.show({
@@ -95,7 +110,7 @@ export default function Login() {
       codLoja={codLoja}
       setCnpj={setCnpj}
       setCodLoja={setCodLoja}
-      loading={loading}
+      loading={isLoading }
     />
   );
 }

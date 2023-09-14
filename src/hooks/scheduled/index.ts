@@ -3,15 +3,31 @@ import { useCallback } from "react";
 import axios from "axios";
 import { ScheduledSchema, ScheduledSchemaProps } from "./types";
 import { ApiService } from "../../service";
+import { optionsProps } from "../updateRegister";
 
 export const useScheduled = () => {
   const [loading, setLoading] = useState(false);
   const [dataScheduled, setDataScheduled] = useState<ScheduledSchema[]>([]);
+  const [hasStatusSend, setHasStatusSend] = useState<"Success"| "Failure" | undefined>(undefined);
+
+
+  const optionsDefault = ({ method, url, data }: optionsProps) => {
+    return {
+      method,
+      url,
+      baseURL: "http://taisyuri.pythonanywhere.com",
+      headers: {
+        "content-type": "application/json",
+      },
+      data,
+    };
+  };
+
 
   const getScheduled = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await ApiService.get("/api");
+      const { data } = await ApiService.get("/api/");
       setDataScheduled(data);
       setLoading(false);
     } catch (error) {
@@ -24,14 +40,20 @@ export const useScheduled = () => {
     }
   }, []);
 
-  const sendFavorite = useCallback(
+  const sendCalendar = useCallback(
     async ({ ...props }: ScheduledSchemaProps) => {
       setLoading(true);
-      await ApiService.post("/api/", {
-        ...props,
-      })
+      await axios(
+        optionsDefault({
+          method: "POST",
+          url: "/api/",
+          data: props,
+        })
+      )
         .then(function (response) {
-          console.log(response);
+          console.log(response)
+          if(response.status === 201) {setHasStatusSend("Success")}
+          else{setHasStatusSend("Failure")}
         })
         .catch(function (error) {
           console.error(error);
@@ -44,6 +66,7 @@ export const useScheduled = () => {
     loading,
     getScheduled,
     dataScheduled,
-    sendFavorite,
+    sendCalendar,
+    hasStatusSend
   };
 };

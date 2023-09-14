@@ -1,7 +1,7 @@
 import { VStack, Box, ScrollView, Input } from "native-base";
 import { useCallback, useEffect, useState } from "react";
 import { useUpdateRegister } from "@/hooks/updateRegister";
-import { useCompanyStore } from "@/states/companyStore";
+import { useCompanyStepsStore } from "@/states/companyStepStore";
 import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
 import { router, useGlobalSearchParams } from "expo-router";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
@@ -20,7 +20,7 @@ export default function PlatFiscal() {
 
   const { typePlat } = useGlobalSearchParams();
   const { requestUpdateRegister } = useUpdateRegister()
-  const { setData, companyStore } = useCompanyStore();
+  const { setDataSteps, companyStepsStore } = useCompanyStepsStore();
 
   useEffect(() => {
     if (config || valueAtiv) {
@@ -36,21 +36,21 @@ export default function PlatFiscal() {
 
   const handleContinue = useCallback(() => {
     const data: UpdateRegisterSchemaProps = {
-      ...companyStore,
+      ...companyStepsStore,
       certDigital_atvSat: valueAtiv ? valueAtiv : "-",
       steps: {
-        ...companyStore.steps,
+        ...companyStepsStore.steps,
         certDigital_atvSat: valueToPass ? false : true,
       }
     }
     requestUpdateRegister({ ...data })
-    setData({ ...data })
+    setDataSteps({ ...data })
 
     router.push(
       { pathname: '/(drawer)/(tabs)/Tax/', params: { typePlat: typePlat as string } }
     );
     console.log('data', data)
-  }, [companyStore, router, typePlat, valueAtiv, valueToPass, router, requestUpdateRegister, setData])
+  }, [companyStepsStore, router, typePlat, valueAtiv, valueToPass, router, requestUpdateRegister, setDataSteps])
 
   const itensAccordion = {
     Sat: [

@@ -30,3 +30,5 @@ export const company: ICompany[] = [
 ];
 
 //7 058 649 00 001 35
+
+//029 243 390 001 00

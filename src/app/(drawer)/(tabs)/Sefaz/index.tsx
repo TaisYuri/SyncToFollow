@@ -2,7 +2,7 @@ import { VStack, Box, ScrollView } from "native-base";
 import { useCallback, useEffect, useState } from "react";
 import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
 import { useUpdateRegister } from "@/hooks/updateRegister";
-import { useCompanyStore } from "@/states/companyStore";
+import { useCompanyStepsStore } from "@/states/companyStepStore";
 import { router, useGlobalSearchParams } from "expo-router";
 import * as DocumentPicker from "expo-document-picker";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
@@ -21,7 +21,7 @@ export default function Sefaz() {
 
   const { typePlat } = useGlobalSearchParams();
   const { requestUpdateRegister } = useUpdateRegister()
-  const { setData, companyStore } = useCompanyStore();
+  const { setDataSteps, companyStepsStore } = useCompanyStepsStore();
 
   useEffect(() => {
     if (selectedFile?.name) {
@@ -50,20 +50,20 @@ export default function Sefaz() {
 
   const handleContinue = useCallback(() => {
     const data: UpdateRegisterSchemaProps = {
-      ...companyStore,
+      ...companyStepsStore,
       steps: {
-        ...companyStore.steps,
+        ...companyStepsStore.steps,
         csc_acSat: valueToPass ? false : true,
       }
     }
     requestUpdateRegister({ ...data })
-    setData({ ...data })
+    setDataSteps({ ...data })
 
     router.push(
       { pathname: '/(drawer)/(tabs)/Fisco/', params: { typePlat: typePlat as string } }
     );
     console.log('data-- PASSO 2', data)
-  }, [companyStore, router, typePlat, requestUpdateRegister, setData, router, valueToPass])
+  }, [companyStepsStore, router, typePlat, requestUpdateRegister, setDataSteps, router, valueToPass])
 
 
   const itemsAccordion = {

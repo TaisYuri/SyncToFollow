@@ -7,34 +7,41 @@ import { Card, IconButton } from 'react-native-paper';
 import { equipmentByState } from "@/mocks/equipmentByState";
 import { equipment } from "@/mocks/equipment";
 import { useUpdateRegister } from "@/hooks/updateRegister";
-import { initialValues } from "@/mocks/initialValues";
-import { useCompanyStore } from "@/states/companyStore";
+import { useCompanyStepsStore } from "@/states/companyStepStore";
 import Text from "@/components/Text";
 import DrawerHeader from "@/components/DrawerHeader";
+import { useInfoCompanyStore } from "@/states/infoCompanyStore";
 
 export default function Home() {
   const [companyInfo, setCompanyInfo] = useState<ICompany[]>([]);
   const { codLoja } = useGlobalSearchParams();
 
-  const { sendUpdateRegister, } = useUpdateRegister()
-  const {setData} = useCompanyStore();
+  const { getUpdateRegister, dataUpdateRegister } = useUpdateRegister()
+  const { setDataSteps } = useCompanyStepsStore();
+  const {setData } = useInfoCompanyStore();
 
   const impr = require('../../../../assets/Impr.png')
   const certif = require('../../../../assets/certificado.png')
   const pinpad = require('../../../../assets/pinpad.png')
 
+  //CADATRAR LOJA 
+  //sendUpdateRegister(initialValues(codLoja as string))
+
   useEffect(() => {
+
     if (codLoja) {
       setCompanyInfo(company.filter(item => item.codLoja === codLoja))
-      sendUpdateRegister(initialValues(codLoja as string))
+      setData(company.find(item => item.codLoja === codLoja))
+      getUpdateRegister(codLoja as string)
     }
   }, [])
 
   useEffect(() => {
-    setData({
-      ...initialValues(codLoja as string)
-    })
-  },[])
+    if (dataUpdateRegister) {
+      setDataSteps(dataUpdateRegister)
+    }
+  }, [dataUpdateRegister])
+
 
   return (
     <>

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { VStack, Box, ScrollView } from "native-base";
 import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
 import { useUpdateRegister } from "@/hooks/updateRegister";
-import { useCompanyStore } from "@/states/companyStore";
+import { useCompanyStepsStore } from "@/states/companyStepStore";
 import { router } from "expo-router";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
 import ProgressBar from "@/components/Progress";
@@ -19,7 +19,7 @@ export default function Tax() {
   const [disabledButton, setDisabledButton] = useState(false);
 
   const { requestUpdateRegister } = useUpdateRegister()
-  const { setData, companyStore } = useCompanyStore();
+  const { setDataSteps, companyStepsStore } = useCompanyStepsStore();
 
   useEffect(() => {
     if (taxSystem) {
@@ -46,20 +46,20 @@ export default function Tax() {
 
   const handleContinue = useCallback(() => {
     const data: UpdateRegisterSchemaProps = {
-      ...companyStore,
+      ...companyStepsStore,
       impostos: taxSystem,
       steps: {
-        ...companyStore.steps,
+        ...companyStepsStore.steps,
         impostos: valueToPass ? false : true,
       }
     }
     requestUpdateRegister({ ...data })
-    setData({ ...data })
+    setDataSteps({ ...data })
 
     router.push(
-      { pathname: '/(drawer)/(tabs)/DataVerify/', params: { codLoja: companyStore.codLoja } }
+      { pathname: '/(drawer)/(tabs)/DataVerify/', params: { codLoja: companyStepsStore.codLoja } }
     );
-  }, [companyStore, router, valueToPass, taxSystem, requestUpdateRegister, setData, router])
+  }, [companyStepsStore, router, valueToPass, taxSystem, requestUpdateRegister, setDataSteps, router])
 
 
   return (

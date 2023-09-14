@@ -2,7 +2,7 @@ import { VStack, Box, HStack, Divider, ScrollView } from "native-base";
 import { useCallback, useEffect, useState } from "react";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useUpdateRegister } from "@/hooks/updateRegister";
-import { useCompanyStore } from "@/states/companyStore";
+import { useCompanyStepsStore } from "@/states/companyStepStore";
 import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
 import CheckBox from "@/components/CheckBox";
@@ -20,7 +20,7 @@ export default function CadUnico() {
   const { platFiscal } = useGlobalSearchParams();
 
   const { requestUpdateRegister } = useUpdateRegister()
-  const { setData, companyStore } = useCompanyStore();
+  const { companyStepsStore,setDataSteps } = useCompanyStepsStore();
 
   useEffect(() => {
     if (valueBank && valueSefaz) {
@@ -40,23 +40,23 @@ export default function CadUnico() {
   const handleContinue = useCallback(() => {
 
     const data: UpdateRegisterSchemaProps = {
-      ...companyStore,
+      ...companyStepsStore,
       platFiscal: platFiscal as string,
       cadBanco: valueBank,
       cadRF: valueSefaz,
       steps: {
-        ...companyStore.steps,
+        ...companyStepsStore.steps,
         cadBanco: valueBank,
         cadRF: valueSefaz,
       }
     }
     requestUpdateRegister({ ...data })
-    setData({ ...data })
+    setDataSteps({ ...data })
 
     router.push(
       { pathname: '/(drawer)/(tabs)/Sefaz/', params: { typePlat: platFiscal as string } }
     );
-  }, [companyStore, platFiscal, valueBank, valueSefaz, requestUpdateRegister, setData, router])
+  }, [companyStepsStore, platFiscal, valueBank, valueSefaz, requestUpdateRegister, setDataSteps, router])
 
   return (
     <>
