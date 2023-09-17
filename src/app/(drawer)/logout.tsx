@@ -13,13 +13,14 @@ export default function LogOut() {
 
   const handleLogout = useCallback(() => {
     router.push('/(drawer)/Login/')
+    
   },[])
 
 
   return (
     <>
       <VStack flex={1} backgroundColor="#f9f9f9">
-        <DrawerHeader title="" />
+        <DrawerHeader title="Sair" />
         <Center  flex={1}>
         <Box mb='5'>
           <Text fontSize='2xl' fontWeight='bold'>Tem certeza que deseja sair?</Text>

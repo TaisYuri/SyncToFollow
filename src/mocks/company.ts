@@ -6,6 +6,7 @@ export interface ICompany {
   address: string;
   city: string;
   state: string;
+  email: string;
 }
 
 export const company: ICompany[] = [
@@ -14,6 +15,7 @@ export const company: ICompany[] = [
     cnpj: "70586490000135",
     razaoSocial: "Comercio de produtos ltda",
     name: "Antônio",
+    email: "antonio@teste.com",
     address: "Rua Walter Billian",
     city: "Manaus",
     state: "AM",
@@ -23,6 +25,7 @@ export const company: ICompany[] = [
     cnpj: "02924339000100",
     razaoSocial: "Serviços & comercios ltda",
     name: "Marlene",
+    email: "marlene@teste.com",
     address: "Avenida Paulista",
     city: "São Paulo",
     state: "SP",

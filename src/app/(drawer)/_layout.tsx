@@ -32,10 +32,12 @@ export default function DrawerRoutesLayout() {
         />
         <Drawer.Screen name="(tabs)" options={{ title: "Continuar o fluxo" }} />
         <Drawer.Screen name="profile" options={{ drawerItemStyle: { display: 'none' } }} />
-        <Drawer.Screen name="calendar" options={{ title: "Agendamento" }}  />
+        <Drawer.Screen name="calendar" options={{ title: "Realizar agendamento" }}  />
+        <Drawer.Screen name="mySchedules" options={{ title: "Meus agendamentos" }}  />
         <Drawer.Screen name="logout" options={{ title: "Sair" }}  />
         <Drawer.Screen name="Login/layout" options={{ drawerItemStyle: { display: 'none' } }} />
         <Drawer.Screen name="Login/index" options={{ drawerItemStyle: { display: 'none' } }} />
+        <Drawer.Screen name="ticket" options={{ drawerItemStyle: { display: 'none' } }} />
       </Drawer>
     </NativeBaseProvider>
   );

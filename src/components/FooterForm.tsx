@@ -14,7 +14,7 @@ interface FooterFormProps  {
 }
 
 const descrip =
-  "Ainda não tenho estes dados mas estou ciente e vou consegui-lo em breve! Quero continuar nas etapas.";
+  "Ainda não tenho estes dados mas estou ciente e quero continuar nas etapas.";
 
 export default function FooterForm({
   setValue,

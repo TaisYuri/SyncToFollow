@@ -2,7 +2,7 @@ import { VStack, Box, ScrollView, HStack, Icon, Center } from "native-base";
 import { useCallback, useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useUpdateRegister } from "@/hooks/updateRegister";
-import { useGlobalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 import { ActivityIndicator } from "react-native-paper";
 import { theme } from "@/theme";
 import PopoverComp, { PopoverHeader } from "@/components/Popover";
@@ -146,7 +146,7 @@ export default function DataVerify() {
           <Text type="title">Ufa!</Text>
           <Text>
             Muita coisa, eu sei! Mas todos os dados são essenciais para que no
-            final, você ganhe tempo e consiga passar pela parte burocratica
+            final, você ganhe tempo e consiga passar pela parte burocratica sem
             dores de cabeça!
           </Text>
           {quantity()}
@@ -176,6 +176,7 @@ export default function DataVerify() {
               : "Ir para o agendamento"
           }
           disabled
+          onPress={() => router.push('/(drawer)/calendar')}
         />
       </VStack>
     </>

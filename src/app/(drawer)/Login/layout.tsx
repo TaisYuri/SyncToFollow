@@ -34,6 +34,8 @@ export default function Layout({
             placeholder="Cod inscrição"
             value={codLoja}
             onChangeText={setCodLoja}
+            keyboardType="numeric"
+
           />
           <Input
             size="lg"
@@ -42,6 +44,8 @@ export default function Layout({
             value={cnpj}
             onChangeText={setCnpj}
             mb="10"
+            keyboardType="numeric"
+
           />
 
           <Button

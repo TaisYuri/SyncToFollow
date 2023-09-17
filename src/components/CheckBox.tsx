@@ -11,7 +11,7 @@ interface CheckBoxProps {
 }
 
 const descrip =
-  "Ainda não tenho estes dados mas estou ciente e vou consegui-lo em breve! Quero continuar nas etapas.";
+  "Ainda não tenho estes dados mas estou ciente e quero continuar nas etapas.";
 
 export default function CheckBox({
   setValues,
@@ -20,22 +20,23 @@ export default function CheckBox({
   ...props
 }: CheckBoxProps) {
   return (
-    <HStack my={2} 
-     mx={2}
-     alignItems='center'
-     >
-    <Checkbox
-      status={checked ? 'checked' : 'unchecked'}
-      // 
-      // borderColor="blues.400"
-      // colorScheme="info"
-      onPress={() => {
-        setValues(!checked);
-      }}
-      color={theme.colors.blues[400]}
+    <HStack my={2}
+      mx={2}
+      alignItems='center'
+    >
+      <Checkbox
+        status={checked ? 'checked' : 'unchecked'}
+        // 
+        // borderColor="blues.400"
+        // colorScheme="info"
+        onPress={() => {
+          setValues(!checked);
+        }}
+        color={theme.colors.blues[400]}
       />
-      <Text lineHeight='lg' mt={1}>{description}</Text>
-      </HStack>
+      <Text lineHeight='lg' mt={1} 
+      >{description}</Text>
+    </HStack>
     // </Checkbox>
   );
 }

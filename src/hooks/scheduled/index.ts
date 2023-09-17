@@ -4,11 +4,12 @@ import axios from "axios";
 import { ScheduledSchema, ScheduledSchemaProps } from "./types";
 import { ApiService } from "../../service";
 import { optionsProps } from "../updateRegister";
+import { router } from "expo-router";
 
 export const useScheduled = () => {
   const [loading, setLoading] = useState(false);
   const [dataScheduled, setDataScheduled] = useState<ScheduledSchema[]>([]);
-  const [hasStatusSend, setHasStatusSend] = useState<"Success"| "Failure" | undefined>(undefined);
+  const [hasStatusSend, setHasStatusSend] = useState<string | undefined>(undefined);
 
 
   const optionsDefault = ({ method, url, data }: optionsProps) => {
@@ -52,8 +53,20 @@ export const useScheduled = () => {
       )
         .then(function (response) {
           console.log(response)
-          if(response.status === 201) {setHasStatusSend("Success")}
-          else{setHasStatusSend("Failure")}
+          if(response.status === 201) {
+            setHasStatusSend("Agendamento realizado com sucesso!")
+            router.push({ pathname: '/ticket', params: {
+              appointmentDate: response.data.appointmentDate, 
+              appointmentTime: response.data.appointmentTime,
+              ticket: response.data.ticket,
+              type: response.data.type,
+              createdDate: response.data.createdDate,
+            
+            } })
+          }
+          else{
+            setHasStatusSend("Ops! Algo deu errado. Tente novamente.")
+          }
         })
         .catch(function (error) {
           console.error(error);

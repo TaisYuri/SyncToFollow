@@ -1,4 +1,4 @@
-import { VStack, Box, HStack, FlatList, Center, Image } from "native-base";
+import { VStack, Box, HStack, FlatList, Center, Image, ScrollView } from "native-base";
 import { useEffect, useState } from "react";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useGlobalSearchParams } from "expo-router";
@@ -54,6 +54,7 @@ export default function Home() {
           </Text>
           <Text fontSize="3xl" lineHeight='sm'>{companyInfo[0]?.name}!</Text>
         </VStack>
+        <ScrollView showsVerticalScrollIndicator={false}>
         <Box mb="3">
           <Card style={{ backgroundColor: "#f9f9f9" }} >
             <LinearGradient
@@ -125,7 +126,8 @@ export default function Home() {
           />
         </Box>
 
-        <Card >
+        <Card style={{marginBottom: 8
+        }}>
           <LinearGradient
             style={{ borderRadius: 12, padding: 4 }}
             colors={['#022851', '#023265', '#023E7E', '#0362C4']} start={{ x: 0.2, y: 0.6 }}
@@ -143,6 +145,7 @@ export default function Home() {
             </Card.Actions>
           </LinearGradient>
         </Card>
+        </ScrollView>
       </VStack>
     </>
   );
