@@ -1,5 +1,4 @@
-import { VStack, Text, Icon, Box, Progress } from "native-base";
-import { Ionicons } from "@expo/vector-icons";
+import { VStack, Text, Box, Progress } from "native-base";
 
 interface ProgressProps {
   value: number;

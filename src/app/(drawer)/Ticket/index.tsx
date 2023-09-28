@@ -1,23 +1,12 @@
-import DrawerHeader from "@/components/DrawerHeader";
 import { router, useGlobalSearchParams } from 'expo-router';
-import { Center, VStack, Text, Box, Button, HStack } from "native-base";
-import ButtonRN from "@/components/Button";
-import { useCallback } from "react";
+import { Center, VStack, Text, Box } from "native-base";
 import { transformDate, transformHour } from "@/utils";
-import Calendar from "../../../assets/calendar.svg";
+import ButtonRN from "@/components/Button";
+import DrawerHeader from "@/components/DrawerHeader";
+import Calendar from "../../../../assets/calendar.svg";
 
 export default function Ticket() {
   const { appointmentDate, appointmentTime, ticket, type, createdDate } = useGlobalSearchParams();
-
-  console.log("scheduled", appointmentDate, appointmentTime)
-  const handleGoBack = useCallback(() => {
-    router.back();
-  }, [])
-
-  const handleLogout = useCallback(() => {
-    router.push('/(drawer)/Login/')
-  }, [])
-
 
   return (
     <>

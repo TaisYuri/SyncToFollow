@@ -14,16 +14,6 @@ import DrawerHeader from "@/components/DrawerHeader";
 import WellDone from "../../../../../assets/well_done.svg";
 import KeyPoints from "../../../../../assets/key_points.svg";
 
-export interface Steps {
-  platFiscal: boolean;
-  check_status: boolean;
-  cadBanco: boolean;
-  cadRF: boolean;
-  csc_acSat: boolean;
-  certDigital_atvSat: boolean;
-  impostos: boolean;
-}
-
 const EnumStepsNFCE: { [key: string]: string } = {
   cadBanco: "Cadastro no banco",
   cadRF: "Cadastro na Secretaria da Fazenda",
@@ -52,7 +42,6 @@ export default function DataVerify() {
     getUpdateRegister(codLoja as string)
     setisLoading(false)
   }, []);
-
 
   useEffect(() => {
     setisLoading(true)

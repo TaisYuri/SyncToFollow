@@ -1,5 +1,3 @@
-import { Button, IButtonProps, Text } from "native-base";
-import { Link, LinkProps } from "expo-router";
 import { List } from "react-native-paper";
 import { theme } from "@/theme";
 

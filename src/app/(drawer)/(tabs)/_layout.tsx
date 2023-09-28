@@ -29,11 +29,11 @@ export default function TabRoutesLayout() {
       <Stack screenOptions={{ headerShown: false }}>
         {/* <Stack.Screen name="Welcome/[codLoja]" options={{ title: "Home" }} /> */}
         {/* <Stack.Screen name="Login/index" options={{ title: "Login" }} /> */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="CadUnico/[platFiscal]"
           options={{ title: "Cadastro Inicial" }}
-        />
-        {/* <Stack.Screen name="profile" options={{ title: "Perfil" }} /> */}
+        /> */}
+        {/* <Stack.Screen name="/(drawer)/Login/" options={{ title: "teste" }} /> */}
       </Stack>
     </NativeBaseProvider>
   );

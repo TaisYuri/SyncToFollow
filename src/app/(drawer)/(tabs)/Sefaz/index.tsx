@@ -12,6 +12,7 @@ import Text from "@/components/Text";
 import Accordion from "@/components/Accordion";
 import ButtonFile from "@/components/ButtonFile";
 import DrawerHeader from "@/components/DrawerHeader";
+import ButtonRN from "@/components/Button";
 
 export default function Sefaz() {
   const [valueToPass, setValueToPass] = useState(false);
@@ -19,7 +20,7 @@ export default function Sefaz() {
   const [selectedFile, setSelectedFile] =
     useState<DocumentPicker.DocumentPickerAsset>();
 
-  const { typePlat } = useGlobalSearchParams();
+  const { platFiscal } = useGlobalSearchParams();
   const { requestUpdateRegister } = useUpdateRegister()
   const { setDataSteps, companyStepsStore } = useCompanyStepsStore();
 
@@ -41,7 +42,6 @@ export default function Sefaz() {
 
       if (result.assets !== null) {
         setSelectedFile(result?.assets?.[0]);
-        console.log("result?.assets?.[0]", result?.assets?.[0]);
       }
     } catch (err) {
       console.warn(err);
@@ -60,10 +60,9 @@ export default function Sefaz() {
     setDataSteps({ ...data })
 
     router.push(
-      { pathname: '/(drawer)/(tabs)/Fisco/', params: { typePlat: typePlat as string } }
+      { pathname: '/(drawer)/(tabs)/Fisco/', params: { platFiscal: platFiscal as string } }
     );
-    console.log('data-- PASSO 2', data)
-  }, [companyStepsStore, router, typePlat, requestUpdateRegister, setDataSteps, router, valueToPass])
+  }, [companyStepsStore, router, platFiscal, requestUpdateRegister, setDataSteps, router, valueToPass])
 
 
   const itemsAccordion = {
@@ -103,7 +102,7 @@ export default function Sefaz() {
     ],
   };
 
-  if (typePlat === "NFCe") {
+  if (platFiscal === "NFCe") {
     return (
       <>
         <VStack flex={1} backgroundColor="#f9f9f9">
@@ -145,13 +144,15 @@ export default function Sefaz() {
             <VStack m='3'>
               <Text fontSize='sm'>{selectedFile?.name}</Text>
             </VStack>
+
+            <FooterForm
+            setValue={setValueToPass} checked={valueToPass}  />
+
           </ScrollView>
         </VStack>
-        <VStack px="4" backgroundColor="#f9f9f9">
-          <FooterForm
-            // href="/PlatFiscal/Sat" 
-            setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
-        </VStack>
+        <VStack px="4" mb="6" backgroundColor="#f9f9f9">
+        <ButtonRN disabled={disabledButton} onPress={handleContinue} />
+      </VStack>
       </>
     );
   }
@@ -195,14 +196,14 @@ export default function Sefaz() {
           <VStack m='3'>
             <Text fontSize='sm'>{selectedFile?.name}</Text>
           </VStack>
-        </ScrollView>
-      </VStack>
-      <VStack px="4" backgroundColor="#f9f9f9">
-        <FooterForm
-          // href="/PlatFiscal/Sat" 
-          setValue={setValueToPass} checked={valueToPass}
-          disabled={disabledButton} onPress={handleContinue}
-        />
+
+         <FooterForm
+            setValue={setValueToPass} checked={valueToPass}  />
+            
+          </ScrollView>
+        </VStack>
+        <VStack px="4" mb="6" backgroundColor="#f9f9f9">
+        <ButtonRN disabled={disabledButton} onPress={handleContinue} />
       </VStack>
     </>
   );

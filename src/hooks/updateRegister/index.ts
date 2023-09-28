@@ -37,9 +37,9 @@ export const useUpdateRegister = () => {
     } catch (error) {
       setLoading(false);
       if (axios.isAxiosError(error)) {
-        console.log(error);
+        console.log("Erroooo:",error);
       } else {
-        console.log(error);
+        console.log("Erroooo:",error);
       }
     }
   }, []);

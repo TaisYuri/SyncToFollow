@@ -1,5 +1,4 @@
-import { Button, IButtonProps, Text } from "native-base";
-import { Link, LinkProps } from "expo-router";
+import { Button,  Text } from "native-base";
 import { GestureResponderEvent } from "react-native";
 
 export interface ButtonProps {
@@ -14,7 +13,6 @@ export default function ButtonRN({
   onPress
 }: ButtonProps) {
   return (
-    // <Link asChild {...props}>
     <>
       {!disabled 
       ? <Button bgColor="gray.200" size={'lg'} disabled>
@@ -28,7 +26,6 @@ export default function ButtonRN({
           </Text>
         </Button>
       }
-    {/* </Link> */}
     </>
   );
 }

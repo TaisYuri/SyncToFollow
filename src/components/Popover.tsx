@@ -1,4 +1,4 @@
-import { Box, HStack, Icon, Popover, Text } from "native-base";
+import { HStack, Icon, Popover, Text } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 
 interface PopoverProps {

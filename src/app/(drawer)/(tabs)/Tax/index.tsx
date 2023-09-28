@@ -11,6 +11,7 @@ import FooterForm from "@/components/FooterForm";
 import Text from "@/components/Text";
 import Accordion from "@/components/Accordion";
 import DrawerHeader from "@/components/DrawerHeader";
+import ButtonRN from "@/components/Button";
 
 export default function Tax() {
   const [taxSystem, setTaxSystem] = useState(false);
@@ -121,12 +122,12 @@ export default function Tax() {
             checked={sheet}
             description="Quero a planilha para meu contador preencher"
           />
+          <FooterForm setValue={setValueToPass} checked={valueToPass} />
         </ScrollView>
       </VStack>
 
-      <VStack px="4" backgroundColor="#f9f9f9">
-        <FooterForm
-          setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
+      <VStack px="4" mb="6" backgroundColor="#f9f9f9">
+        <ButtonRN disabled={disabledButton} onPress={handleContinue} />
       </VStack>
     </>
   );

@@ -1,4 +1,4 @@
-import { VStack, Text, Icon, Center, Progress } from "native-base";
+import { VStack, Text, Icon, Center } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 
 interface HeaderProps {

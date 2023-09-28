@@ -11,6 +11,7 @@ import FooterForm from "@/components/FooterForm";
 import Text from "@/components/Text";
 import Accordion from "@/components/Accordion";
 import DrawerHeader from "@/components/DrawerHeader";
+import ButtonRN from "@/components/Button";
 
 export default function CadUnico() {
   const [valueBank, setValueBank] = useState(false);
@@ -20,7 +21,7 @@ export default function CadUnico() {
   const { platFiscal } = useGlobalSearchParams();
 
   const { requestUpdateRegister } = useUpdateRegister()
-  const { companyStepsStore,setDataSteps } = useCompanyStepsStore();
+  const { companyStepsStore, setDataSteps } = useCompanyStepsStore();
 
   useEffect(() => {
     if (valueBank && valueSefaz) {
@@ -54,7 +55,7 @@ export default function CadUnico() {
     setDataSteps({ ...data })
 
     router.push(
-      { pathname: '/(drawer)/(tabs)/Sefaz/', params: { typePlat: platFiscal as string } }
+      { pathname: '/(drawer)/(tabs)/Sefaz/', params: { platFiscal: platFiscal as string } }
     );
   }, [companyStepsStore, platFiscal, valueBank, valueSefaz, requestUpdateRegister, setDataSteps, router])
 
@@ -124,11 +125,13 @@ export default function CadUnico() {
             checked={valueSefaz}
             description="Cadastro realizado junto a Sefaz"
           />
+
+          <FooterForm
+            setValue={setValueToPass} checked={valueToPass} />
         </ScrollView>
       </VStack>
-      <VStack px="4" backgroundColor="#f9f9f9">
-        <FooterForm
-          setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
+      <VStack px="4" mb="6" backgroundColor="#f9f9f9">
+        <ButtonRN disabled={disabledButton} onPress={handleContinue} />
       </VStack>
     </>
   );

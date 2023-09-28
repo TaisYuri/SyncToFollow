@@ -11,14 +11,15 @@ import FooterForm from "@/components/FooterForm";
 import Accordion from "@/components/Accordion";
 import Text from "@/components/Text";
 import DrawerHeader from "@/components/DrawerHeader";
+import ButtonRN from "@/components/Button";
 
-export default function PlatFiscal() {
+export default function platFiscal() {
   const [valueAtiv, setValueAtiv] = useState("");
   const [config, setConfig] = useState(false);
   const [valueToPass, setValueToPass] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
 
-  const { typePlat } = useGlobalSearchParams();
+  const { platFiscal } = useGlobalSearchParams();
   const { requestUpdateRegister } = useUpdateRegister()
   const { setDataSteps, companyStepsStore } = useCompanyStepsStore();
 
@@ -47,10 +48,9 @@ export default function PlatFiscal() {
     setDataSteps({ ...data })
 
     router.push(
-      { pathname: '/(drawer)/(tabs)/Tax/', params: { typePlat: typePlat as string } }
+      { pathname: '/(drawer)/(tabs)/Tax/' }
     );
-    console.log('data', data)
-  }, [companyStepsStore, router, typePlat, valueAtiv, valueToPass, router, requestUpdateRegister, setDataSteps])
+  }, [companyStepsStore, router, platFiscal, valueAtiv, valueToPass, router, requestUpdateRegister, setDataSteps])
 
   const itensAccordion = {
     Sat: [
@@ -105,7 +105,7 @@ export default function PlatFiscal() {
     ],
   };
 
-  if (typePlat === "NFCe") {
+  if (platFiscal === "NFCe") {
     return (
       <>
         <VStack flex={1} backgroundColor="#f9f9f9">
@@ -136,13 +136,11 @@ export default function PlatFiscal() {
               checked={config}
               description="Instalado e pronto"
             />
+            <FooterForm setValue={setValueToPass} checked={valueToPass} />
           </ScrollView>
         </VStack>
-        <VStack px="4" backgroundColor="#f9f9f9">
-          <FooterForm
-            // href="/Tax"
-            setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
-
+        <VStack px="4" mb="6" backgroundColor="#f9f9f9">
+          <ButtonRN disabled={disabledButton} onPress={handleContinue} />
         </VStack>
       </>
     );
@@ -190,11 +188,11 @@ export default function PlatFiscal() {
             onChangeText={setValueAtiv}
             mb="10"
           />
+          <FooterForm setValue={setValueToPass} checked={valueToPass} />
         </ScrollView>
       </VStack>
-      <VStack px="4" backgroundColor="#f9f9f9">
-        <FooterForm setValue={setValueToPass} checked={valueToPass} disabled={disabledButton} onPress={handleContinue} />
-
+      <VStack px="4" mb="6" backgroundColor="#f9f9f9">
+        <ButtonRN disabled={disabledButton} onPress={handleContinue} />
       </VStack>
     </>
   );

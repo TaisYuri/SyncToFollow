@@ -1,48 +1,12 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import Layout from "./layout";
-import { ICompany, company } from "../../../mocks/company";
-import { useRouter, useGlobalSearchParams, router } from "expo-router";
+import { useCallback, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
 import { Alert, useToast } from "native-base";
 import { Keyboard } from "react-native";
 import { useCompanyStepsStore } from "@/states/companyStepStore";
-import { useUpdateRegister } from "@/hooks/updateRegister";
 import { UpdateRegisterSchemaProps } from "@/hooks/updateRegister/types";
 import { useInfoCompanyStore } from "@/states/infoCompanyStore";
-
-const data = {
-  codLoja: "0002",
-  platFiscal: "-",
-  cadBanco: false,
-  cadRF: false,
-  csc_acSat: "-",
-  certDigital_atvSat: "-",
-  impostos: false,
-  check_status: false,
-  steps: {
-    cadBanco: false,
-    cadRF: false,
-    csc_acSat: false,
-    certDigital_atvSat: false,
-    impostos: false
-  }
-};
-const dataPut = {
-  codLoja: "0001",
-  platFiscal: "SAT",
-  cadBanco: false,
-  cadRF: false,
-  csc_acSat: "22222",
-  certDigital_atvSat: "45444",
-  impostos: false,
-  check_status: false,
-  steps: {
-    cadBanco: true,
-    cadRF: false,
-    csc_acSat: false,
-    certDigital_atvSat: false,
-    impostos: false
-  }
-};
+import { ICompany, company } from "../../../mocks/company";
+import Layout from "./layout";
 
 
 export default function Login() {
@@ -53,14 +17,14 @@ export default function Login() {
   const {  setDataSteps } = useCompanyStepsStore();
   const {  setData } = useInfoCompanyStore();
 
-  useEffect(() => {
-    console.log("useEffect")
+  useFocusEffect(
+    useCallback(() => {
     setDataSteps({} as UpdateRegisterSchemaProps )
     setData({} as ICompany  )
     setCodLoja("")
     setCnpj("")
 
-  }, [])
+  }, []))
 
   const toast = useToast();
 

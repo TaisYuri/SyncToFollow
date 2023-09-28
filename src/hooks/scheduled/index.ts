@@ -55,7 +55,7 @@ export const useScheduled = () => {
           console.log(response)
           if(response.status === 201) {
             setHasStatusSend("Agendamento realizado com sucesso!")
-            router.push({ pathname: '/ticket', params: {
+            router.push({ pathname: '/(drawer)/Ticket', params: {
               appointmentDate: response.data.appointmentDate, 
               appointmentTime: response.data.appointmentTime,
               ticket: response.data.ticket,

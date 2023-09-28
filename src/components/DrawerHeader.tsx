@@ -7,9 +7,11 @@ import { theme } from "@/theme";
 
 export interface DrawerHeaderProps extends DrawerNavigationOptions {
   title: string;
+  showProfileRoute?: boolean;
 }
 
-export default function DrawerHeader({ title, ...props }: DrawerHeaderProps) {
+export default function DrawerHeader({ title, showProfileRoute = true, ...props }: DrawerHeaderProps) {
+
   return (
     <Drawer.Screen
       options={{
@@ -21,6 +23,7 @@ export default function DrawerHeader({ title, ...props }: DrawerHeaderProps) {
         headerTintColor: "#fff",
         drawerActiveBackgroundColor: theme.colors.blues["800"],
         headerStyle: { backgroundColor: theme.colors.blues["800"] },
+        drawerItemStyle: { display: showProfileRoute ? 'flex' : 'none' }
       }}
       {...props}
     />

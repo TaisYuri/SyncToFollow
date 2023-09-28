@@ -1,5 +1,4 @@
 import { Button, IButtonProps, Text } from "native-base";
-import { Link, LinkProps } from "expo-router";
 
 export interface ButtonProps extends IButtonProps {
   title?: string;

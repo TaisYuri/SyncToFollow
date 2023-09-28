@@ -1,5 +1,5 @@
 import Text from "@/components/Text";
-import { Button, Center, ScrollView, VStack, Alert, useToast, IconButton, CloseIcon, HStack, Box, Pressable, Modal } from "native-base";
+import { Button, Center, ScrollView, VStack, Alert, useToast, HStack, Box, Pressable, Modal } from "native-base";
 import { useCallback, useEffect, useState } from "react";
 import moment from 'moment';
 import CalendarPicker from "react-native-calendar-picker";
@@ -7,13 +7,12 @@ import { theme } from "@/theme";
 import { useScheduled } from "@/hooks/scheduled";
 import { ActivityIndicator } from 'react-native-paper';
 import DrawerHeader from "@/components/DrawerHeader";
-import { useCompanyStepsStore } from "@/states/companyStepStore";
 import ButtonRN from "@/components/Button";
-import { Touchable } from "react-native";
 import { useInfoCompanyStore } from "@/states/infoCompanyStore";
 import { router } from "expo-router";
 import { transformDate } from "@/utils";
 import DatePicker from "../../../assets/date_picker.svg";
+import { useCompanyStepsStore } from "@/states/companyStepStore";
 
 const week = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
 const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
@@ -56,6 +55,7 @@ export default function Calendar() {
   const toast = useToast();
 
   const { infoCompanyStore } = useInfoCompanyStore();
+  const { companyStepsStore } = useCompanyStepsStore();
 
   const startDate = selectedDate ? selectedDate.format('YYYY-MM-DD').toString() : '';
 
@@ -101,7 +101,7 @@ export default function Calendar() {
       appointmentDate: startDate,
       appointmentTime: selectedHour.concat(":00"),
       ticket: String(Math.floor(Math.random() * 1000))
-    }).then((value) => console.log("valueww", value))
+    })
 
     setisLoading(false)
   }, [data, startDate, selectedHour, sendCalendar])
@@ -156,12 +156,11 @@ export default function Calendar() {
 
   return (
     <VStack flex={1} bgColor='#f9f9f9' px="4">
-      <DrawerHeader title="Agendamento" />
+      <DrawerHeader title="Agendamento"  showProfileRoute={companyStepsStore?.steps?.impostos ? true: false} />
       {handleAlert()}
       <ScrollView showsVerticalScrollIndicator={false}>
         <VStack my='4'>
           <Text fontSize='lg'>Escolha o dia de preferência:</Text>
-
           <CalendarPicker
             onDateChange={setSelectedDate}
             weekdays={week}

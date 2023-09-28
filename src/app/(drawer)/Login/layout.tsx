@@ -1,4 +1,4 @@
-import { VStack, Text, Center, Input, Button, Box } from "native-base";
+import { VStack, Text, Center, Input, Button } from "native-base";
 import { LoginProps } from "./types";
 import Background from "../../../../assets/wave.svg";
 import BackgroundBottom from "../../../../assets/wave_bottom.svg";

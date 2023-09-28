@@ -1,4 +1,4 @@
-import { ICompany, company } from "@/mocks/company";
+import { company } from "@/mocks/company";
 import { equipmentByState } from "@/mocks/equipmentByState";
 import { useCallback, useState } from "react";
 
