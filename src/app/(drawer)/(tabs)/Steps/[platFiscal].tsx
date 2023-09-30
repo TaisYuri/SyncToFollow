@@ -25,17 +25,25 @@ export default function Steps() {
   const { platFiscal } = useGlobalSearchParams();
   const { companyStepsStore } = useCompanyStepsStore();
 
+  const stepOne = useMemo(() => companyStepsStore?.steps?.cadBanco || companyStepsStore?.steps.cadRF, [companyStepsStore])
+
   const title = useMemo(() =>
-    companyStepsStore.steps.cadBanco || companyStepsStore.steps.cadRF
+    stepOne
       ? "Bora finalizar estes cadastros?"
       : "Estes são os passos que você precisará seguir até sua conquista. Bora lá!"
-    , [companyStepsStore.steps.cadBanco, companyStepsStore.steps.cadRF])
+    , [companyStepsStore])
+
+  const buttonText = useMemo(() =>
+    stepOne
+      ? "Continuar preenchendo"
+      : "Iniciar"
+    , [companyStepsStore])
 
   const status: { [key: string]: "inactive" | "confirm" | "selected" } = {
-    bank: companyStepsStore.steps.cadBanco || companyStepsStore.steps.cadRF ? 'confirm' : "selected",
-    csc_sat: companyStepsStore.steps.csc_acSat ? "confirm" : companyStepsStore.steps.cadBanco || companyStepsStore.steps.cadRF ? "selected" : "inactive",
-    certDigital_atvSat: companyStepsStore.steps.certDigital_atvSat ? "confirm" : companyStepsStore.steps.csc_acSat ? "selected" : "inactive",
-    impostos: companyStepsStore.steps.impostos ? "confirm" : companyStepsStore.steps.certDigital_atvSat ? "selected" : "inactive",
+    bank: stepOne ? 'confirm' : "selected",
+    csc_sat: companyStepsStore?.steps.csc_acSat ? "confirm" : stepOne ? "selected" : "inactive",
+    certDigital_atvSat: companyStepsStore?.steps.certDigital_atvSat ? "confirm" : companyStepsStore?.steps.csc_acSat ? "selected" : "inactive",
+    impostos: companyStepsStore?.steps.impostos ? "confirm" : companyStepsStore?.steps.certDigital_atvSat ? "selected" : "inactive",
   }
 
   const routers: { [key: string]: any } = {
@@ -86,14 +94,14 @@ export default function Steps() {
         <VStack mt='4' >
           <Text fontSize='lg' fontWeight='bold'>{title}</Text>
         </VStack>
-        {bySteps( "Cadastros importantes com o Banco e a Receita Federal" , true, status.bank)}
-        {bySteps(platFiscal === 'NFCe' ? "Liberação do código de segurança do contribuinte no portal da Sefaz": "Liberação do SAT na secretária da fazenda", true, status.csc_sat)}
-        {bySteps(platFiscal === 'NFCe' ? "Adquirir e instalar o certificado digital": "Ativação do SAT com o fabricante do aparelho", true, status.certDigital_atvSat)}
+        {bySteps("Cadastros importantes com o Banco e a Receita Federal", true, status.bank)}
+        {bySteps(platFiscal === 'NFCe' ? "Liberação do código de segurança do contribuinte no portal da Sefaz" : "Liberação do SAT na secretária da fazenda", true, status.csc_sat)}
+        {bySteps(platFiscal === 'NFCe' ? "Adquirir e instalar o certificado digital" : "Ativação do SAT com o fabricante do aparelho", true, status.certDigital_atvSat)}
         {bySteps("Check para verificar impostos pra vendas", true, status.impostos)}
       </VStack>
       <CheckBox width="40%" height="90" style={{ alignSelf: 'flex-end' }} />
       <VStack mb='4'>
-        <ButtonRN title="Continuar preenchendo" disabled onPress={handleConfirm} />
+        <ButtonRN title={buttonText} disabled onPress={handleConfirm} />
       </VStack>
     </VStack>
   );
