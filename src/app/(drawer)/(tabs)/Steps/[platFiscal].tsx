@@ -25,7 +25,7 @@ export default function Steps() {
   const { platFiscal } = useGlobalSearchParams();
   const { companyStepsStore } = useCompanyStepsStore();
 
-  const stepOne = useMemo(() => companyStepsStore?.steps?.cadBanco || companyStepsStore?.steps.cadRF, [companyStepsStore])
+  const stepOne = useMemo(() => companyStepsStore?.steps?.cadBanco || companyStepsStore?.steps?.cadRF, [companyStepsStore])
 
   const title = useMemo(() =>
     stepOne
@@ -41,9 +41,9 @@ export default function Steps() {
 
   const status: { [key: string]: "inactive" | "confirm" | "selected" } = {
     bank: stepOne ? 'confirm' : "selected",
-    csc_sat: companyStepsStore?.steps.csc_acSat ? "confirm" : stepOne ? "selected" : "inactive",
-    certDigital_atvSat: companyStepsStore?.steps.certDigital_atvSat ? "confirm" : companyStepsStore?.steps.csc_acSat ? "selected" : "inactive",
-    impostos: companyStepsStore?.steps.impostos ? "confirm" : companyStepsStore?.steps.certDigital_atvSat ? "selected" : "inactive",
+    csc_sat: companyStepsStore?.steps?.csc_acSat ? "confirm" : stepOne ? "selected" : "inactive",
+    certDigital_atvSat: companyStepsStore?.steps?.certDigital_atvSat ? "confirm" : companyStepsStore?.steps?.csc_acSat ? "selected" : "inactive",
+    impostos: companyStepsStore?.steps?.impostos ? "confirm" : companyStepsStore?.steps?.certDigital_atvSat ? "selected" : "inactive",
   }
 
   const routers: { [key: string]: any } = {
