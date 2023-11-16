@@ -3,7 +3,7 @@
 App developed in React Native with Typescript, for my graduation in MBA - Mobile Developed, XP Education.
 
 Using EAS Build for hosting, the app can be explored through Expo (Expo Application Services). 
-For backend, django rest foi a escolha para criação dos modelos e endpoints. O baco de dados criado em SQLite foi armazenado em PythonAnyWhere.
+Para o backend, django rest foi a escolha para criação dos modelos e endpoints. O banco de dados criado em SQLite foi armazenado em [PythonAnyWhere](https://www.pythonanywhere.com).
 
 ## Introduction
 Pensando no pequeno empresário que necessita de um sistema de frente de caixa mas não possui conhecimentos prévios do regime tributários do Brasil.
@@ -34,16 +34,19 @@ For App, hosting in EXPO: [Preview](exp://u.expo.dev/update/e5c38f70-aa51-49eb-a
 
 ## Screens with details
 
-## `Details`
-![Movie](https://github.com/TaisYuri/Movies/blob/master/src/assets/videos_gif/detailMovie.gif) ------ ![Tv](https://github.com/TaisYuri/Movies/blob/master/src/assets/videos_gif/detailSerie.gif) 
+## `Home & Flow`
+ <img src="https://github.com/TaisYuri/SyncToFollow/blob/main/FrontEndProject/assets/Home.jpg" width="250" />  --  <img src="https://github.com/TaisYuri/SyncToFollow/blob/main/FrontEndProject/assets/steps.jpg" width="250" />
 
-## `Favorites`
-![favorites](https://github.com/TaisYuri/Movies/blob/master/src/assets/videos_gif/favorite.gif)
+## `Steps`
+<img src="https://github.com/TaisYuri/SyncToFollow/blob/main/FrontEndProject/assets/step.jpg" width="250" /> 
 
-## `Search`
-![search](https://github.com/TaisYuri/Movies/blob/master/src/assets/videos_gif/search.gif)
+## `Scheduling`
+ <img src="https://github.com/TaisYuri/SyncToFollow/blob/main/FrontEndProject/assets/Schedule.jpg" width="250" />  --  <img src="https://github.com/TaisYuri/SyncToFollow/blob/main/FrontEndProject/assets/MySchedules.jpg" width="250" />
 
-## Contribution
-Layout made by me and design on Figma by [Jessica Torres](https://github.com/jessicagtorres)
 
-Figma link [Figma](https://www.figma.com/file/IQqQxieh4kLdAMwoDqEINZ/Protótipo?type=design&node-id=0-1&mode=design&t=MCWEHch7lXi25hMb-0)
+
+## Layout
+Figma link [Figma](www.figma.com/file/anlLCby2Zijue6JuoNgxAX/Sync-to-Follow)
+
+## Presentation
+Presentation for projeto aplicado da MBA em Desenvolvimento Mobile - [Link](https://1drv.ms/v/s!AvAWi-hZJRHunXtyD22mbqMj_Iih?e=eWmzy4)
